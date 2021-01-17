@@ -14,4 +14,4 @@ keyword: SW, Python, Anaconda3, Data Science, Machine Learning
     - 4_sklearn (업로드 예정)
     - 5_tensorflow (업로드 예정)
 - git
-    - git_basic (업로드 예정)
+    - git_basic:  git bash에서 활용하는 기본적인 명령어 (보완 예정)

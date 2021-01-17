@@ -132,7 +132,9 @@ __현재 가상환경의 모든 조건 txt로 저장__하기: `conda env export 
 
 __저장된 조건 txt로 환경구축__: `conda env create -f conda_requirements.txt`
 
- <img src="anaconda_venv_jupyter_doc.assets/image-20210117123749327.png" alt="image-20210117123749327" style="zoom:33%;" />  ☜ conda_requirements.txt의 모습
+ <img src="anaconda_venv_jupyter_doc.assets/image-20210117123749327.png" alt="image-20210117123749327" style="zoom:33%;" />  
+
+↑ conda_requirements.txt의 모습
 
 ___
 
@@ -160,7 +162,9 @@ __패키지목록 txt로 환경 생성__(python 3.7버전 이상만 가능): `co
 
 __패키지목록 txt를 활용하여(똑같은 버전과 패키지로) 패키지 설치__ : `conda install --file package-list.txt` (단, 현재 위치한 디렉토리에 package-list.txt가 있어야 함)
 
- <img src="anaconda_venv_jupyter_doc.assets/image-20210117123551038.png" alt="image-20210117123551038" style="zoom: 33%;" /> ☜ package-list.txt의 모습
+ <img src="anaconda_venv_jupyter_doc.assets/image-20210117123551038.png" alt="image-20210117123551038" style="zoom: 33%;" /> 
+
+↑ package-list.txt의 모습
 
 설치된 패키지들은 `아나콘다설치경로/anaconda3/envs/가상환경이름/Lib/site-packages` 안에 존재.
 
