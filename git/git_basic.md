@@ -24,6 +24,6 @@
 
 `git remote add origin 깃레파지토리주소` :  본인의 레파지토리(github 원격저장소)와 연동하겠다는 뜻. git remote add origin https://github.com/DEV-SeungHwanJeon/TIL.git    깃레파지토리주소는 본인 깃허브 사이트의 레파지토리에 들어가서 초록색 code 버튼을 누르면 나온다.
 
-![image-20210117150653437](C:/Users/tmd43/ssafy5/exercise/startcamp/0115/Git_기본.assets/image-20210117150653437.png)
+![image-20210117150653437](git_basic.assets/image-20210117150653437.png)
 
 `git push -u origin master` 모여진 commit들을 master에 push 하겠다는 뜻.
