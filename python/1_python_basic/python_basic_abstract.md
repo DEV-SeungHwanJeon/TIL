@@ -1,5 +1,19 @@
 # Python_Basic
 
+목차:
+
+- 변수
+- 식별자
+- 데이터 타입(숫자, 문자, 참/거짓)
+- 형변환
+- 연산자
+- 표현식, 문장
+- 컨테이너
+
+
+
+
+
 Python의 스타일 가이드: `PEP-8` 
 
 파이썬 코드는 1줄에 1문장(statement)이 원칙이다.
@@ -52,7 +66,7 @@ print(keyword.kwlist)
 
 
 
-### 데이터 타입: 숫자, 글자, 참/거짓
+### 데이터 타입: 숫자, 문자, 참/거짓
 
 #### 숫자 타입:
 
@@ -337,13 +351,101 @@ print(result2, type(result2))
 
 ### 표현식(Expression) & 문장(Statement)
 
+#### 표현식
 
+하나의 값(value)으로 환원(reduce)될 수 있는 문장으로 식별자, 값(리터럴), 연산자로 구성된다. 표현식을 만드는 문법(syntax)은 일반적인 수식의 규칙과 유사하다.
+
+표현식 ㅡ> evaluate ㅡ> 값
+
+표현식은 하나의 값으로 평가(evaluate)될 수 있어야 한다.
+
+식별자가 값이 할당되어 있을 경우 수식의 일부가 될 수 있다.
+
+하나의 값도 표현식이 될 수 있다. ex) 'hello'
+
+
+
+#### 문장
+
+파이썬이 실행 가능한 최소한의 코드 단위이다.
+
+표현식도 문장이 될 수 있다.
+
+표현식 ⊂ 문장
+
+
+
+### 컨테이너
+
+여러 개의 값을 저장할 수 있는 것
+
+#### 시퀀스형 컨테이너
+
+데이터가 순서대로 나열된 형식을 나타낸다. 순서를 가질 수 있으며, 특정 위치의 데이터를 가리킬 수 있다.
+
+- 리스트: `[], list()`를 통해 생성한다. 특정 위치의 데이터는 리스트이름[정수]를 통해 접근한다. 빈 리스트도 생성 가능하다.
+- 튜플: `(), tuple()`를 통해 생성한다. 수정 불가능하며 읽을 수 밖에 없는 특성을 가졌다. (read only)
+- 레인지: 숫자의 시퀀스(순서)를 나타내기 위해 사용한다. range(n,m,s) n은 시작값, m-1이 끝 값, s는 step이다.
+- 문자형
+
+시퀀스에서 활용할 수 있는 연산자/함수
+
+| 연산자     | 설명                      |
+| ---------- | ------------------------- |
+| x in s     | s 안에 x가 있는지 확인    |
+| x not in s | s 안에 x가 없는지 확인    |
+| s1+s2      | 합쳐짐                    |
+| s * n      | n번 반복해서 합침(더하기) |
+| s[i]       | 인덱싱(indexing)          |
+| s[i:j]     | 슬라이싱(slicing)         |
+| s[i:j:k]   | k간격 슬라이싱(slicing)   |
+| len(s)     | 길이                      |
+| min(s)     | 최대값                    |
+| max(s)     | 최소값                    |
+| s.count(x) | x의 갯수 count            |
+
+#### 비 시퀀스형 컨테이너
+
+- 셋(set): `{}, set()`으로 만든다. 빈 집합을 만드려면 `set()`을 써야한다.(`{}`는 불가능) 순서가 없고 중복된 값이 없는 자료구조이다. 수학의 집합과 동일하게 다루어진다. 
+  - 합집합: set_a | set_b
+  - 차집합: set_a - set_b
+  - 교집합: set_a & set_b
+
+
+
+- 딕셔너리(dictionary): `{key:value}, dict()`으로 만든다. key와 value가 한 쌍으로 이루어져있으며, key는 변경 불가능(immutable)한 데이터(str, int, float, bool, tuple, range)만 가능하다. value는 list, dictionary를 포함한 모든 것이 가능하다.
+  - dict[key] = value
+  - dict.keys()
+  - dict.values()
+  - dict.items()
+
+
+
+#### 컨테이너형 형변환
+
+| 분류       | string | list로   | tuple    | range | set      | dictionary |
+| ---------- | ------ | -------- | -------- | ----- | -------- | ---------- |
+| string에서 |        | O        | O        | X     | O        | X          |
+| list       | O      |          | O        | X     | O        | X          |
+| tuple      | O      | O        |          | X     | O        | X          |
+| range      | O      | O        | O        |       | O        | X          |
+| set        | O      | O        | O        | X     |          | X          |
+| dictionary | O      | O(key만) | O(key만) | X     | O(key만) |            |
+
+
+
+#### 데이터의 분류
+
+- 변경 가능한 것: `list, dict, set`
+- 변경 불가능한 것: `리터럴(숫자, 글자, 참/거짓), range, tuple`
 
 
 
 ### Jupyter Notebook: 
 
 REPL(Read Eval Print Loop): 파이썬의 대화형 개발 환경 중 하나로 셀 단위의 코드 실행으로 바로 결과를 확인한다. 특히 Jupyter Notebook은 Markdown문법을 지원하여 풍부한 문서화 기능을 가지고 있다.
+
+명령창에서 `pip install jupyter notebook` 명령어를 활용하여 설치할 수 있으며 `jupyter notebook` 명령어로 실행시킬 수 있다. jupyter notebook을 실행한 위치의 디렉토리를 기준으로 파일들을 탐색할 수 있다.
 
 
 
@@ -370,3 +472,4 @@ ValueError: not enough values to unpack (expected 3, got 2)
 ```python
 ValueError: too many values to unpack (expected 2)
 ```
+
