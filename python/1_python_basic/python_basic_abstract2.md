@@ -110,11 +110,103 @@ def 함수이름(parameter):
     return value
 ```
 
-#### 함수의 결과값
+#### 함수의 입력값(Input)
+
+- 매개변수(parameter): 함수의 정의 부분에서 볼 수 있으며, 입력을 받아 함수 내부에서 활용할 `변수`이다.
+
+- 전달인자(argument): 함수를 호출하는 부분에서 볼 수 있으며, 실제로 전달되는 `입력값`이라고 생각하면 된다.
+
+  ```python
+  def func(x):  #여기서 x가 매개변수
+      return x+2
+  
+  func(5) # 여기서 5가 전달인자
+  ```
+
+##### 함수의 전달인자 분류
+
+- 위치 인자: 함수는 기본적으로 인자를 위치로 판단한다.
+
+  ```python
+  def func(a, b):
+      return a * (b ** 2)
+  ```
+
+- 기본 인자 값: 함수가 호출될 때, 인자를 지정하지 않아도 기본 값을 설정할 수 있다.
+
+  ```python
+  def func(a, b=1):
+      return a + b
+  
+  func(10) # a = 10, b = 1로 들어감
+  ```
+
+  
+
+- 키워드 인자: 직접 변수의 이름으로 특정 인자를 전달할 수 있다.
+
+  ```python
+  def func(name, menu='라면'):
+      print(f'{name}의 오늘 점심은 {menu}이야')
+      
+  func('전승환') # 가능
+  func(menu='김밥',name='전승환') # 가능
+  func(menu='치킨','전승환') #에러. 키워드 인자를 활용한 후에 위치 인자를 활용할 수는 없다.
+  ```
+
+
+
+- 가변(임의) 인자 리스트: 개수가 정해지지 않은 임의의 인자를 받기 위하여 가변 인자 리스트`*args`를 활용한다. 가변 인자 리스트는 `tuple`형태로 처리가 되며, 매개변수에 `*`를 붙여 표현한다. 보통 매개변수 목록의 마지막에 적는다.
+
+  ```python
+  def func(school, prof, *args):
+      for student in args:
+          print(f'{school} {prof} 교수님, 저는 {student}입니다.')
+          
+  func('금오공대', '홍길동', '전승환','김철수','김짱구','김훈이')
+  
+  # 금오공대 홍길동 교수님, 저는 전승환입니다.
+  # 금오공대 홍길동 교수님, 저는 김철수입니다.
+  # 금오공대 홍길동 교수님, 저는 김짱구입니다.
+  # 금오공대 홍길동 교수님, 저는 김훈이입니다.
+  ```
+
+- 가변(임의) 키워드 인자: 정해지지 않은 키워드 인자들은 `dict`형태로 처리가 되며, `**kwargs` 를 활용한다. 가변 키워드 인자는 `dict`형태로 처리가 되며, 매개변수에 `**`를 붙여 표현한다. 보통 매개변수 목록의 마지막에 적는다.
+
+  ```python
+  def my_dict(**kwargs):
+      print('안녕을 각 나라의 언어로 하면 뭘까요?')
+      for key in kwargs:
+          print(f'{key}로는 {kwargs[key]}')
+      return kwargs
+  
+  my_dict(한국어='안녕', 영어='hi', 독일어='Guten Tag')
+  
+  # 안녕을 각 나라의 언어로 하면 뭘까요?
+  # 한국어로는 안녕
+  # 영어로는 hi
+  # 독일어로는 Guten Tag
+  # ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+  def my_url(**kwargs):
+      url = 'https://api.go.kr'
+      for name, value in kwargs.items():
+          url += f'{name}={value}&'
+      return url
+  
+  my_url(sidoname='서울',key='asdf')
+  
+  # 'https://api.go.krsidoname=서울&key=asdf&'
+  ```
+
+  
+
+#### 함수의 결과값(Output)
 
 함수는 `return`을 통하여 결과값을 전달할 수 있다. 이 때 오직 한 개의 객체만 반환된다.
 
 
+
+### 함수와 스코프
 
 
 
