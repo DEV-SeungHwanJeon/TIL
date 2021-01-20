@@ -1,4 +1,4 @@
-# Python_Basic
+# Python_Basic_Abstract1
 
 목차:
 
@@ -9,6 +9,7 @@
 - 연산자
 - 표현식, 문장
 - 컨테이너
+- Jupyter Notebook
 
 
 
@@ -446,6 +447,22 @@ print(result2, type(result2))
 REPL(Read Eval Print Loop): 파이썬의 대화형 개발 환경 중 하나로 셀 단위의 코드 실행으로 바로 결과를 확인한다. 특히 Jupyter Notebook은 Markdown문법을 지원하여 풍부한 문서화 기능을 가지고 있다.
 
 명령창에서 `pip install jupyter notebook` 명령어를 활용하여 설치할 수 있으며 `jupyter notebook` 명령어로 실행시킬 수 있다. jupyter notebook을 실행한 위치의 디렉토리를 기준으로 파일들을 탐색할 수 있다.
+
+<자주 사용하는 명령어들>
+
+a: 위로 셀 생성 above 
+
+b: 밑으로 셀 생성 below
+
+m: 마크다운 셀로 변경
+
+y : 파이썬 셀로 변경
+
+h : 도움말
+
+ctrl+z : 되돌리기
+
+
 
 
 
