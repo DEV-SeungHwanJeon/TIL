@@ -20,6 +20,7 @@
   - Jupyter Notebook
   
     
+  
 - Abstract 2
 
   - 제어문
@@ -28,6 +29,4 @@
   - 재귀 함수
   - 예외 처리
   - Error 모음집
-
-
 

@@ -1,10 +1,10 @@
 # git basic
 
-### git 명령어:
-
-
-
 `cd 경로`: 로컬 컴퓨터의 원하는 디렉토리로 이동 ex) `cd C:\Users\tmd43\TIL`
+
+
+
+### git 명령어:
 
 `git init`: 현재 디렉토리를 기준으로 관리하겠다는 뜻
 
