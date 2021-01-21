@@ -2,7 +2,7 @@
 
 공부한 것들을 정리해두는 공간
 
-keyword: SW, Python, Anaconda3, Data Science, Machine Learning
+keyword: SW, Python, Data Science, Machine Learning
 
 개요:
 - python

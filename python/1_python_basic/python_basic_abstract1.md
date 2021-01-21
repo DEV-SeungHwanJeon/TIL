@@ -458,35 +458,11 @@ m: 마크다운 셀로 변경
 
 y : 파이썬 셀로 변경
 
+dd: 셀 삭제
+
+x: 셀 잘라내기
+
 h : 도움말
 
 ctrl+z : 되돌리기
-
-
-
-
-
-### Errors 모음집:
-
-문법에 오류가 있을 때 나오는 오류:
-
-```python
-SyntaxError: invalid syntax
-```
-
-
-
-식별자보다 할당하려는 변수의 개수가 더 많을 때 나오는 오류:
-
-```python
-ValueError: not enough values to unpack (expected 3, got 2)
-```
-
-
-
-식별자보다 할당하려는 변수의 개수가 더 적을 때 나오는 오류:
-
-```python
-ValueError: too many values to unpack (expected 2)
-```
 
