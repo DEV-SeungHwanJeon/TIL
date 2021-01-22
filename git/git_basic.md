@@ -32,8 +32,15 @@
 
 
 
+<git Bash 명령어들>
+#HWS/0118에서 진행. 완전히 목록에서 삭제하기 위하여 다음과 같은 명령어로 삭제함.
+ls -a
+git rm --cached .ipynb_chechpoints -rf    # 하나만 삭제하고 싶으면 -rf을 빼고 치면 됨
+cd ..
+git status
 
 
-reference:
+
+## reference:
 
 https://git-scm.com/book/ko/v2/%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-Git-%EC%B5%9C%EC%B4%88-%EC%84%A4%EC%A0%95
