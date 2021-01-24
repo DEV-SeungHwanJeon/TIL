@@ -262,5 +262,5 @@ plt.show()
 # 결과:
 ```
 
- ![image-20210124170703878](CHAPTER1_헬로파이썬.assets/image-20210124170703878.png)
+ ![image-20210124170703878](CHAPTER1_hellopython.assets/image-20210124170703878.png)
 
