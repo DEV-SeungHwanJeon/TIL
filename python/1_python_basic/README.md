@@ -17,6 +17,8 @@
   
   - 컨테이너
   
+  - 데이터 분류
+  
   - Jupyter Notebook
   
     
@@ -34,4 +36,7 @@
 
 - Abstract 3
   - json 파일 불러오기
+  - 데이터 구조
+  - List Comprehension
+  - Built-in Function
 
