@@ -3,10 +3,13 @@
 목차:
 
 - json 파일 불러오기
-- 데이터 구조
+- 데이터 구조 (순서가 있는 String, List)
 - List Comprehension
-- 데이터 구조에 적용 가능한 Built-in Function
+- iterable 데이터 구조에 적용 가능한 Built-in Function
+- 데이터 구조 (순서가 없는 Set, Dictionary)
+- Dictionary Comprehension
 - Lazy Evaluation
+- 모듈과 패키지
 
 
 
@@ -26,7 +29,7 @@ print(output) # 리스트에 파일path들이 string으로 넣어져 있을 것�
 
 
 
-### 데이터 구조
+### 데이터 구조 (순서가 있는 String, List)
 
 데이터 구조란 데이터에 편리하게 접근하고, 변경하기 위해서 데이터를 저장하거나 조작하는 방법을 말한다.
 
@@ -141,9 +144,58 @@ print(output) # 리스트에 파일path들이 string으로 넣어져 있을 것�
 
 
 
+### 데이터 구조 (순서가 없는 Set, Dictionary)
+
+#### 세트(Set)
+
+변경 가능하고(mutable), 순서가 없고(unordered), 순회 가능한(iterable)
+
+- 추가 및 삭제
+  - set.add(elem): elem을 set에 추가
+  - set.update(*others): 여러가지 값을 추가한다. 인자로는 반드시 iterable 데이터 구조를 전달해야함
+  - set.remove(elem): elem을 set에서 삭제. elem이 set에 없다면 KeyError 발생
+  - set.discard(elem): elem을 set에서 삭제. elem이 set에 없어도 Error 발생 하지 않음
+  - set.pop(): 임의의 원소를 제거해 반환(랜덤). pop(i)처럼 인덱스를 설정하면 TypeError 발생. (set에는 순서가 없기 때문). 빈 set에 pop을 실행하면 KeyError 발생
 
 
 
+#### 딕셔너리(Dictionary)
+
+변경 가능하고(mutable), 순서가 없고(unordered), 순회 가능한(iterable)
+
+- 조회
+  - dict.get(key[, default]): dict안에 key가 있는지 확인 후 value를 반환한다. dict안에 key가 없더라도 Error가 발생하지 않으며 None을 반환한다. default를 설정하면 None 대신 default가 나온다.
+- 추가 및 삭제
+  - dict.pop(key[, default]): dict안에 key가 있으면 제거하고 그 value을 반환한다. dict안에 key가 없으면 KeyError가 발생하지만 key가 없더라도 default를 설정해두면 Error가 발생하지 않는다.
+  - dict.update({key:value}) or dict.update(키 = value) : 해당 key의 value를 덮어 쓴다. 해당 key가 없으면 그 key와 value가 dict에 추가된다.
+- 순회(반복문 활용)
+  - for를 활용하여 순회하는 4가지 방법:
+    - for key in dict:
+    - for key in dict.keys():
+    - for val in dict.values():
+    - for key, val in dict.items():
+
+
+
+
+
+### Dictionary Comprehension
+
+iterable에서 dictionary를 생성할 수 있다.
+
+```python
+{ key: value for elem in iterable }
+dict( { key : value for elem in iterable })
+```
+
+
+
+Dictionary Comprehension에 조건을 추가할 수 있다.
+
+```python
+{ key: value for elem in iterable if 조건식 }
+{ key: value if 조건식 else 값 for elem in iterable}
+```
 
 
 
@@ -194,21 +246,66 @@ print(output) # 리스트에 파일path들이 string으로 넣어져 있을 것�
 
 
 
+### 모듈과 패키지
 
+- 모듈: 특정 기능하는 코드를 .py 파일 단위로 작성한 것
 
+  ```python
+  ## my_module.py에다가 저장
+  def my_func1(n):
+      return bool(n%2)
+  
+  def my_func2(n):
+      return n//2
+  
+  ########## 다른 파일에서 ##########
+  import my_module # my_module.py를 import문을 통해 이름 공간으로 가져옴
+  print(dir(my_module)) # 우리가 만든 함수들을 확인가능
+  
+  my_module_func2 = my_module.my_func2 # 함수를 변수에 할당해서 사용할 수도 있음
+  my_module_func2(10)
+  ```
 
+  
 
+- 패키지: 특정 기능과 관련된 여러 모듈들의 집합. 패키지 안에는 또 다른 서브 패키지를 포함할 수도 있음. 점(.)으로 구분된 모듈 이름(package.module)을 써서 모듈을 구조화하는 방법이다.
 
+  ```python
+  # 폴더구조
+  my_package/
+  	__init__.py
+      below_package/    # my_package.below_package 는 my_package 패키지 안에 있는 below_package
+      	__init__.py
+          tools.py
+          
+  # tools.py안의 내용:
+  pi = 3.14159265358979323846
+  e = 2.71828182845904523536
+  def my_max(a, b):
+      if a > b:
+          return a
+      else:
+          return b
+  
+  ####### 다른 파일에서 #######
+  from my_package.below_package import tools
+  print(tools.pi)
+  
+  import my_package.below_package as mpbp   # 별명을 지정하여 가져올 수 있다.
+  print(mpbp.tools.e)
+  
+  import my_package.below_package.tools as mpbptools
+  print(mpbptools.my_max(3,5))
+  
+  from my_package.below_package.tools import (e, pi) # 특정 함수 혹은 속성만 활용하고 싶을 때
+  print(e)
+  print(pi)
+  
+  from my_package.below_package.tools import *  # tools모듈에서 모든 변수와 함수를 가져온다.
+  ```
 
+  
 
+- 파이썬 표준 라이브러리: 파이썬에 기본적으로 설치된 모듈과 내장함수를 묶어서 파이썬 표준 라이브러리(Python Standard Library, PSL)이라 부른다.
 
-
-
-
-
-
-
-
-
-
-
+- 패키지 관리자(pip): PyPI에 저장된 외부 패키지들을 설치하도록 도와주는 패키지 관리자
