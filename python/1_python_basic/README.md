@@ -36,7 +36,23 @@
 
 - Abstract 3
   - json 파일 불러오기
-  - 데이터 구조
+  
+  - 데이터 구조 (순서가 있는 String, List)
+  
   - List Comprehension
-  - Built-in Function
+  
+  - iterable 데이터 구조에 적용 가능한 Built-in Function
+  
+  - 데이터 구조 (순서가 없는 Set, Dictionary)
+  
+  - Dictionary Comprehension
+  
+  - Lazy Evaluation
+  
+  - 모듈과 패키지
+  
+    
+
+- Abstract 4
+  - 
 
