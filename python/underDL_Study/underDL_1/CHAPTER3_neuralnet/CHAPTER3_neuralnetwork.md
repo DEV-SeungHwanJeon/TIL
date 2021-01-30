@@ -4,9 +4,13 @@
 
 가중치 매개변수의 적절한 값을 데이터로부터 자동으로 학습하는 능력이 이제부터 살펴볼 신경망의 중요한 성질이다. 신경망이 입력 데이터가 무엇인지 식별하는 처리 과정을 자세히 알아보자.
 
+
+
 ### 3. 1 퍼셉트론이란?
 
 신경망과 퍼셉트론의 다른 점을 중심으로 신경망의 구조를 알아보자.
+
+
 
 #### 3. 1. 1 신경망의 예
 
@@ -41,6 +45,8 @@ def step_function(x):
     return np.array(x > 0, dtype = np.int)
 ```
 
+
+
 #### 3. 2. 4 시그모이드 함수 구현하기
 
 ```python
@@ -56,6 +62,8 @@ def sigmoid(x):
 계단함수는 출력 0과 1중 하나의 값만 돌려준다.
 
 시그모이드함수는 0~1 사이의 실수를 돌려준다. 즉, 퍼셉트론에서는 뉴런 사이에 0 혹은 1이 흘렀다면, 신경망에서는 연속적인 실수가 흐른다.
+
+
 
 #### 3. 2. 6 비선형 함수
 
@@ -86,6 +94,8 @@ def Lrelu(x):
 
 
 ### 3. 3 다차원 배열의 계산
+
+
 
 #### 3. 3. 1 ~ 2 다차원 배열과 행렬 곱
 
@@ -223,6 +233,8 @@ y = forward(network, x)
 
 ### 3. 5 출력층 설계하기 (90 page)
 
+
+
 #### 3. 5. 1 소프트맥스 함수 구현하기
 
 ```python
@@ -231,6 +243,8 @@ def softmax(a):
     sum_exp_a = np.sum(exp_a)
     return exp_a / sum_exp_a
 ```
+
+
 
 #### 3. 5. 2 소프트맥스 함수 구현 시 주의점
 
@@ -253,6 +267,8 @@ def softmax(a):
 
 소프트맥스 함수를 거치기 전과 후의 각 원소의 대소관계는 변하지 않는다. 지수함수가 단조증가함수이기 때문이다. 결과적으로 신경망으로 분류할 때는 출력층의 소프트맥스 함수를 생략해도 된다. 자원 낭비를 줄일 수 있다.
 
+
+
 #### 3. 5. 4 출력층의 뉴런 수 정하기
 
 풀려는 문제의 분류하고 싶은 클래스의 수로 설정하는 것이 일반적이다. 추론 시에 가장 큰 값이 출력되는 뉴런에 해당하는 클래스로 판단한다.
@@ -265,20 +281,137 @@ def softmax(a):
 
 28 X 28 크기의 회색조 이미지(1채널), 각 픽셀은 0 ~ 255까지의 값을 취한다. 또한 각 이미지의 레이블로 실제 의미하는 숫자가 붙어있다.
 
+일단 MNIST 데이터를 불러와서 이미지를 화면에 띄워보자.
+
 ```python
 import sys, os
-sys.path.append(os, pardir)
+sys.path.append('C:\\Users\\tmd43\\ssafy5\\TIL\\python\\underDL_Study\\underDL_1\\deeplearning_from_scratch-master') # 내 로컬컴퓨터 내의dataset 디렉토리의 경로
+import numpy as np
 from dataset.mnist import load_mnist
+from PIL import Image
 
+def img_show(img):
+    pil_img = Image.fromarray(np.uint8(img)) # Image.fromarray()는 넘파이로 저장된 이미지 데이터를 PIL용 데이터 객체로 변환
+    pil_img.show()
+
+#load_mnist의 인수: normalize(0~1 정규화), flatten(1차원 배열), one_hot_label(레이블 원-핫인코딩)
 (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
 
 print(x_train.shape)
 print(t_train.shape)
 print(x_test.shape)
 print(t_test.shape)
+
+img = x_train[0]
+label = t_train[0]
+print(label)
+
+print(img.shape)
+img = img.reshape(28,28) # 불러올 때 flatten=True로 해줬으므로 이미지를 보기 위해서는 28 X 28 형태로 reshape 후
+print(img.shape)
+
+img_show(img) # imgshow
+```
+
+ <img src="CHAPTER3_neuralnetwork.assets/image-20210130235843242.png" alt="image-20210130235843242" style="zoom:50%;" />
+
+이후에 필요한 함수들을 정의하고 사전에 학습되어있는 신경망의 가중치 매개변수를 읽어온다.
+
+```python
+# 신경망 구현: 입력층 뉴런 784개(28 X 28), 출력층 뉴런 10개(0~9)
+# 은닉층 2개 ( hidden_layer1: 32, hidden_layer2: 16. 뉴런 수는 임의로 정함)
+import pickle
+
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a-c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def get_data():
+    (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=True, one_hot_label=False)
+    return x_test, t_test
+
+def init_network(): # sample_weight.pkl에 저장되어있는 사전에 학습되어있는 신경망의 가중치 매개변수를 읽어온다. 가중치와 편향 매개변수가 딕셔너리 변수로 저장되어있다.
+    with open("C:\\Users\\tmd43\\ssafy5\\TIL\\python\\underDL_Study\\underDL_1\\deeplearning_from_scratch-master\\ch3.신경망\\sample_weight.pkl", 'rb') as f:
+        network = pickle.load(f)
+    return network
+
+def predict(network, x):
+    W1, W2, W3 = network['W1'], network['W2'], network['W3']
+    b1, b2, b3 = network['b1'], network['b2'], network['b3']
+    
+    a1 = np.dot(x, W1) + b1
+    z1 = sigmoid(a1)
+    a2 = np.dot(z1, W2) + b2
+    z2 = sigmoid(a2)
+    a3 = np.dot(z2, W3) + b3
+    y = softmax(a3)
+    
+    return y
+```
+
+사전 학습된 신경망을 통하여 정확도가 어느정도 나오는지 확인해보자.
+
+```python
+x, t = get_data()
+network = init_network()
+
+accuracy_cnt = 0
+for i in range(len(x)):
+    y = predict(network, x[i])
+    p = np.argmax(y)  # 반환되는 배열에서 확률이 가장 높은 원소의 인덱스를 구한다. 
+    if p == t[i]:  #예측과 정답레이블이 일치하면 
+        accuracy_cnt += 1   # accuracy_cnt를 센다.
+
+print(f'Accuracy: {float(accuracy_cnt) / len(x)}')
+
+# 결과:
+# Accuracy: 0.9352
 ```
 
 
 
+#### 3. 6. 3 배치처리
 
+신경망 각 층의 가중치 배열 shape의 변화
+
+```python
+x, _ = get_data()
+network = init_network()
+W1, W2, W3 = network['W1'], network['W2'], network['W3']
+
+print(f'데이터의 shape: {x.shape}')
+print(x[0].shape, W1.shape, W2.shape, W3.shape)
+
+# 결과:
+# 데이터의 shape: (10000, 784)
+# (784,) (784, 50) (50, 100) (100, 10)
+# 대응하는 차원의 원소 수가 일치함. (여기서 편향은 생략됨)
+```
+
+결과를 보면 784(x) ㅡ> 784 x 50(w1) ㅡ> 50 x 100(w2) ㅡ> 100 x 10(w3) ㅡ> 10(y) 순으로 shape가 변경된다.
+
+한번에 1장을 넣는 것이 아닌 여러장(100장)을 넣어보자. 100 x 784(x) ㅡ> 784 x 50(w1) ㅡ> 50 x 100(w2) ㅡ> 100 x 10(w3) ㅡ> 100 x 10(y) 처럼 shape가 변경 될 것이다. 이렇게 묶은 입력 데이터를 배치 라고 한다.
+
+```python
+# 배치 구현
+x, t = get_data()
+network = init_network()
+
+batch_size = 100
+accuracy_cnt = 0
+
+for i in range(0, len(x), batch_size):  # 0~len(x)까지 100개씩 step
+    x_batch = x[i:i+batch_size]
+    y_batch = predict(network, x_batch)
+    p = np.argmax(y_batch, axis=1)  # 결과 y_batch의 shape가 100 x 10이므로 데이터의 갯수 100개를 기준으로 argmax가 아닌 레이블의 종류 수 10개를 기준(axis=1)으로 argmax를 실행한다.
+    accuracy_cnt += np.sum(p == t[i:i+batch_size]) # 예측한 결과와 실제 레이블을 비교하여 100개중 맞춘 갯수를 np.sum하여 accuracy_cnt에 더해준다.
+    
+print(f'Accuracy: {float(accuracy_cnt) / len(x)}')
+```
 
