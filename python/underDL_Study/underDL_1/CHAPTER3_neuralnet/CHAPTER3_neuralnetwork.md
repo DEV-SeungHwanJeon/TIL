@@ -146,9 +146,15 @@ Y = np.dot(X, W)    # (3,)
 
 ### 3. 4 다층(3층) 신경망 구현하기
 
-input layer: 뉴런 2개    hidden1 layer: 뉴런 3개
+ ![image-20210131131026311](CHAPTER3_neuralnetwork.assets/image-20210131131026311.png)
 
-hidden2 layer: 뉴런 2개    output layer: 뉴런 2개
+input layer: 뉴런 2개
+
+hidden1 layer: 뉴런 3개
+
+hidden2 layer: 뉴런 2개
+
+output layer: 뉴런 2개
 
 
 
@@ -187,7 +193,7 @@ hidden2 layer: 뉴런 2개    output layer: 뉴런 2개
   B3 = np.array([0.1, 0.3])
   
   A3 = np.dot(Z2, W3) + B3
-  Y = identity_function(A3) # 혹은 Y = A3
+  Y = identity_function(A3) # 활성화함수
   ```
 
   출력층의 활성화함수는 은닉층의 활성화함수와는 다르다. 출력층의 활성화 함수는 풀고자 하는 문제의 성질에 맞게 정한다. 일반적으로는 회귀에는 항등 함수를, 이진분류에는 시그모이드 함수를, 다중클래스 분류에는 소프트맥스 함수를 사용한다.
@@ -198,7 +204,8 @@ hidden2 layer: 뉴런 2개    output layer: 뉴런 2개
 
 ```python
 # 신경망 구현의 관례에 따라 가중치만 대문자로 쓰고 그 외 편향과 중간 결과 등은 모두 소문자로 씀
-def init_network():
+
+def init_network(): # 신경망의 각 층에 필요한 매개변수(가중치와 편향)를 초기화하고 network 딕셔너리에 저장
     network = {}
     network['W1'] = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])
     network['b1'] = np.array([0.1, 0.2, 0.3])
@@ -209,7 +216,7 @@ def init_network():
     
     return network
 
-def forward(network, x):
+def forward(network, x): #입력 신호를 출력으로 변환하는 처리 과정
     W1, W2, W3 = network['W1'], network['W2'], network['W3']
     b1, b2, b3 = network['b1'], network['b2'], network['b3']
     
@@ -295,6 +302,8 @@ def img_show(img):
     pil_img.show()
 
 #load_mnist의 인수: normalize(0~1 정규화), flatten(1차원 배열), one_hot_label(레이블 원-핫인코딩)
+
+    
 (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
 
 print(x_train.shape)
@@ -309,6 +318,7 @@ print(label)
 print(img.shape)
 img = img.reshape(28,28) # 불러올 때 flatten=True로 해줬으므로 이미지를 보기 위해서는 28 X 28 형태로 reshape 후
 print(img.shape)
+
 
 img_show(img) # imgshow
 ```
@@ -414,4 +424,22 @@ for i in range(0, len(x), batch_size):  # 0~len(x)까지 100개씩 step
     
 print(f'Accuracy: {float(accuracy_cnt) / len(x)}')
 ```
+
+
+
+
+
+소프트맥스
+
+one - hot
+
+배치
+
+ flatten(1차원 배열)
+
+통신시 numpy 객체가 안넘어감. 그래서 리스트로 넘겨야 함.
+
+np.to_list
+
+
 
