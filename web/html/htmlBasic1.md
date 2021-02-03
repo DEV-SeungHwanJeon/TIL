@@ -26,6 +26,12 @@ Hyper Text Transfer Protocol: hyper text 통신 형식
 
 ## HTML의 기본 구조
 
+HTML에서는 쌍따옴표를 사용한다.
+
+또한 `=`의 앞 뒤로 공백이 없어야 한다.
+
+속성을 구분할 때는 띄어쓰기(공백)를 사용한다.
+
 ```python
 <!DOCTYPE html>
 <html lang="ko">
@@ -65,7 +71,9 @@ HTML문서의 메타 데이터를 통해 문서의 정보를 전달. 페이스�
 
 
 
- DOM 트리: 객체지향적인 부분을 통해서 표현, 저장, 조작.
+ DOM 트리: 객체지향적인 부분을 통해서 표현, 저장, 조작. HTML의 구조를 의미
+
+ <img src="https://lh3.googleusercontent.com/proxy/wWo50mLQBiUmpLqzCBPTT7Hd8QtkRyVdqtjyeH1uaSnC8UhGXXTHWpWlrWUWshly2STHOIaGdzQCzP9gpCP0aiG55uiWZy1QaoCDv4bCPZ-XdjfR6xWEt5Upl5sf6ooN7SZGo1XjxUO8uv103Ej4vl1UZPsmqnnJRnyf">
 
 
 
@@ -85,17 +93,20 @@ HTML의 요소는 태그(tag)와 내용(contents)로 구성되어 있다.
 
 태그별로 사용할 수 있는 속성은 다르다. 공백은 NO. 쌍따옴표 사용.
 
-스타일가이드대로 하지 않아도 동작은 하는데 스타일 가이드
-
 
 
 `<HTML Global Attribute>`
 
 모든 HTML 요소가 공통적으로 사용할 수 있는 속성(몇몇 요소에는 아무 효과가 없을 수 있다.)
 
+- id, class
+- hidden
+- lang
+- style
+- tabindex
+- title
 
 
-<HTML 기본 구조> 
 
 `<div>` : 단순히 구역을 나누기 위한 태그
 
@@ -118,7 +129,7 @@ Non semantic 요소는 div, span 등이 있으며 h1, table 태그들도 시맨�
 - aside: 사이드에 위치한 공간, 메인 콘텐츠와 관련성이 적은 콘텐츠
 - section: 문서의 일반적인 구분, 컨텐츠의 그룹을 표현
 - article: 문서, 페이지, 사이트 안에서 독립적으로 구분되는 영역
-- footer: 문서 전체나 섹션의 푸터(마지막 부분) ![image-20210201110614550](오전_라이브강의.assets/image-20210201110614550.png)
+- footer: 문서 전체나 섹션의 마지막 부분
 
 시맨틱 태그의 장점:
 
@@ -137,67 +148,90 @@ Non semantic 요소는 div, span 등이 있으며 h1, table 태그들도 시맨�
 
 - 그룹 컨텐츠
 
-  - `<p>`
+  - `<p>` : paragraph. 문장 그룹
 
-  - `<hr>`
+  - `<hr>`: horizental. 위쪽과 아래쪽 그룹을 나눌 수 있는 가로줄
 
-  - `<ol>, <ul>`
+  - `<ol>, <ul>`: 리스트 태그. 1. 2. 3. , ■. ■. ■.
 
-  - ...
+  - `<pre>, <blockquote>`: pre format: 문장의 그대로를 보여주고 싶을 때 사용. blockquote는 인용문 할 때 사용하는 > 와 같은 것.
+
+  - `<div>` : 블럭으로 공간을 나누고 싶을 때 사용.
 
     
 
 - 텍스트 관련 요소
 
-  - `<a>`
+  - `<a>` : 하이퍼링크 (a href="url")
 
-  - `<b> vs <strong>` : 굵게 보이는 것은 똑같다.
+  - `<b> vs <strong>` : 텍스트를 굵게 보이게 한다.
 
-    - `<b>` : 그냥굵게
-    - `<strong>` : 굵게 + 의미 강조 (시맨틱 태그)
+    - `<b>` : 텍스트를 굵게
+    - `<strong>` : 텍스트를 굵게 + 의미 강조 (시맨틱 태그)
 
   - `<i> vs <em>`
 
-    - `<i>` : 기울임 ( 이텔릭 체)
-    - `<em>` : 기울임 + 의미 강조
+    - `<i>` : 텍스트 기울임 ( 이텔릭 체)
+    - `<em>` : 텍스트 기울임 + 의미 강조
 
-  - `<span>, <br>, <img>`
+  - `<span>` : 인라인 요소
 
-    - `<span>`
+  - `<br>` : 줄바꿈
 
-    - `<br>` : 줄바꿈
+  - `<img>` : 이미지
 
-    - `<img>` 이미지
-
-      
+    
 
 - table
 
-  - `<tr> : 열, <td>: 데이터, <th>: 헤드`
+  - `<tr>` : 열
 
-  - `<thead>, <tbody>, <tfoot>`
+  - `<td>` : 데이터
 
-  - `<caption>`
+  - `<th>` : 헤드
 
-  - ...
+  - `<thead>` : 테이블 전체의 머릿말
+
+  - `<tbody>` : 테이블 몸통
+
+  - `<tfoot>` : 테이블 밑
+
+  - `<caption>` : 테이블의 설명
+
+  - `<col>`: column을 의미
+
+  - `<colgroup>` : column 그룹화
+
+  - 셀 병합 속성:
+
+    - colspan: 좌우로 병합할 때
+    - rowspan: 위아래로 병합할 때
+    
+  - scope 속성: 주로 th에 적용하며, 가로줄인지 세로줄인지 나타내는 속성
 
     
 
 - form
   - `<form>은 서버에서 처리될 데이터를 제공하는 역할`
-  - `<form>의 기본 속성`
-    - action
-    - method
-  - for 태그 내에 input 태그:
+  - `<form>` 기본 속성
+    - action: 요청할 주소 (입력된 데이터와 함께)
+    - method: http method에 대한 내용. (get/post)
+  - `<form>` 태그 내에 `<input>` 태그:
     - 다양한 타입을 가지는 입력 데이터 필드
-    - `<label>`: 서식 입력 요소의 캡션
-    - form 태그의 공통 속성:
-      - name, placeholder
-      - ...
+    - `<label>`: 서식 입력 요소(input)의 캡션
+    - `<input>` 태그의 공통 속성:
+      - name: id를 입력할 때 입력한 데이터 값이 전달될 때의 이름. 변수명 같은 느낌.
+      - placeholder: 입력을 돕기 위한 helptext. 글자가 흐릿하게 적혀있으며 클릭하면 사라진다.
+      - required: 필수 입력 요소(입력창을 비워둘 수 없게끔 설정하는 속성)
+      - autofocus: 창이 뜨자마자 커서가 활성화되게끔 하는 속성
     - input 유형 (type):
-      - input 요소의 동작은 type에 따라 달라지므로, 각각의 내용을 숙지할 것.
+      - input 요소의 동작은 type에 따라 달라진다. 링크 참조 (<a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/Input">MDN링크</a>)
 
 
 
 
+
+reference: 
+
+- <a href="https://m.blog.naver.com/PostView.nhn?blogId=pjh445&logNo=220071333957&proxyReferer=https:%2F%2Fwww.google.com%2F">DOM 트리</a>
 
