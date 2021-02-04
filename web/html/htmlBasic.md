@@ -2,7 +2,12 @@
 
 HTML : Hyper Text Markup Language
 
-세계 최초의 웹사이트: info.cern.ch   (cern: 유럽 입자물리연구소의 약자)
+- 웹페이지를 작성하기 위한 언어
+- 웹 컨텐츠의 구조를 정의하는 언어
+- HTML로 작성된 문서 파일형식: .html
+- Hyper Text: 텍스트가 정보가 동일선상에 있는 것이 아니라 다중으로 연결되어있는 상태(Hyper). 이 참조(text)를 통하여 자유롭게 움직일 수 있는 것이 Hyper Text이다. (HTML, HTTP)
+- Markup language: 태그 등을 이용하여 문서나 데이터의 구조를 명시하는 언어. 프로그래밍 언어와는 다르게 단순하게 데이터를 표현하기만 한다. (대표적인 예: HTML, Markdown. 현재 우리가 배운 언어는 마크다운이다.(관련은 따로 없음) ) 웹 페이지를 작성하기 위한 (구조를 잡기 위한) 언어. 웹 컨텐츠의 의미와 구조를 정의
+- HTTP(Hyper Text Transfer Protocol) : hyper text 통신 형식
 
 
 
@@ -12,17 +17,7 @@ HTML : Hyper Text Markup Language
 
 - WHATWG: HTML Living Standard ( Apple, Google, Microsoft, Mozilla)
 
-HTML로 작성된 문서 파일형식: .html
 
-
-
-<HTML의 단어 자체를 뜯어보자>
-
-Hyper Text: 텍스트가 정보가 동일선상에 있는 것이 아니라 다중으로 연결되어있는 상태(Hyper). 이 참조(text)를 통하여 자유롭게 움직일 수 있는 것이 Hyper Text이다. (HTML, HTTP)
-
-Markup language: 태그 등을 이용하여 문서나 데이터의 구조를 명시하는 언어. 프로그래밍 언어와는 다르게 단순하게 데이터를 표현하기만 한다. (대표적인 예: HTML, Markdown. 현재 우리가 배운 언어는 마크다운이다.(관련은 따로 없음) ) 웹 페이지를 작성하기 위한 (구조를 잡기 위한) 언어. 웹 컨텐츠의 의미와 구조를 정의
-
-Hyper Text Transfer Protocol: hyper text 통신 형식
 
 ## HTML의 기본 구조
 
@@ -45,66 +40,73 @@ HTML에서는 쌍따옴표를 사용한다.
 </html>
 ```
 
-<head요소>
+HTML의 기본 구조
 
-브라우저에 나타나지 않는다.
-
-
-
-<meta태그>
-
-head요소 내부에 위치한 meta요소로서 해당 문서에 대한 정보인 메타데이터를 정의할 때 사용한다.
-
-`<meta>`요소는 `<base>, <link>, <script>, <style>, <title>`요소와 같은 다른 메타데이터 관련 요소들이 나타낼 수 없는 다양한 종류의 메타데이터를 제공할 때 사용되며, 이렇게 제공된 정보는 브라우저나 검색 엔진, 다른 웹 서비스에서 사용하게 된다.
-
-
-
-<Open Graph Protocol: 메타 데이터를 표현하는 새로운 규약>
-
-HTML문서의 메타 데이터를 통해 문서의 정보를 전달. 페이스북에서 만들었으며 메타정보에 해당하는 제목, 설명 등을 쓸수 있도록 정의. head를 분석해서 카톡에서 보낼 때의 미리보기 같은 것을 만들어준다.
+- `<head>`
+  - 해당 문서의 정보를 담고 있다. (제목, 문자 인코딩)
+  - 외부 로딩 파일 지정도 할 수 있다 (`<link>`)
+  - `<meta>` : 
+    - head요소 내부에 위치한 meta요소로서 해당 문서에 대한 정보인 메타데이터를 정의할 때 사용한다.
+    - `<base>, <link>, <script>, <style>, <title>`요소와 같은 다른 메타데이터 관련 요소들이 나타낼 수 없는 다양한 종류의 메타데이터를 제공할 때 사용되며, 이렇게 제공된 정보는 브라우저나 검색 엔진, 다른 웹 서비스에서 사용하게 된다.
+    - Open Graph Protocol: 메타 데이터를 표현하는 새로운 규약. HTML문서의 메타 데이터를 통해 문서의 정보(head태그 안의 메타 정보)를 분석해서 미리보기 같은 것을 만들어 전달한다. (ex. 카톡 링크 미리보기)
+- `<body>`
+  - 브라우저 화면에 실질적으로 나타내는 정보
+- DOM Tree 구조: 
+  - 부모 관계, 형제 관계를 나타내는 트리 구조 (HTML의 구조)
+  - 객체지향적인 부분을 통해서 표현, 저장, 조작. 
 
 
 
-<body요소>
+요소(element):
 
-실제로 보여지는 부분들
+- HTML의 요소는 태그(tag)와 내용(contents)로 구성되어 있다.
+- 태그 별로 사용할 수 있는 속성은 다르다.
+- 시멘틱 태그: 의미론적 요소를 담은 태그
 
+속성(attribute):
 
-
- DOM 트리: 객체지향적인 부분을 통해서 표현, 저장, 조작. HTML의 구조를 의미
-
- <img src="https://lh3.googleusercontent.com/proxy/wWo50mLQBiUmpLqzCBPTT7Hd8QtkRyVdqtjyeH1uaSnC8UhGXXTHWpWlrWUWshly2STHOIaGdzQCzP9gpCP0aiG55uiWZy1QaoCDv4bCPZ-XdjfR6xWEt5Upl5sf6ooN7SZGo1XjxUO8uv103Ej4vl1UZPsmqnnJRnyf">
-
-
-
-<요소(element)>
-
-HTML의 요소는 태그(tag)와 내용(contents)로 구성되어 있다.
-
-(여는/시작)태그 , 내용 , (닫는/종료)태그
-
-
-
-<속성(attribute)>
-
-`<a> 태그의 href 속성` : hyper text reference
-
-`< a href="https://google.com"> 내용 </a>`
-
-태그별로 사용할 수 있는 속성은 다르다. 공백은 NO. 쌍따옴표 사용.
+- 태그별로 사용할 수 있는 속성은 다르다. 공백은 NO. 쌍따옴표 사용.
+- `HTML Global Attribute` : 모든 HTML 요소가 공통적으로 사용할 수 있는 속성(몇몇 요소에는 아무 효과가 없을 수 있다.)
+  - id, class
+  - hidden
+  - lang
+  - style
+  - tabindex
+  - title
 
 
 
-`<HTML Global Attribute>`
 
-모든 HTML 요소가 공통적으로 사용할 수 있는 속성(몇몇 요소에는 아무 효과가 없을 수 있다.)
 
-- id, class
-- hidden
-- lang
-- style
-- tabindex
-- title
+ㅡㅡㅡㅡㅡㅡㅡ0202부터 다시 정리ㅡㅡㅡㅡㅡㅡㅡ
+
+ㅡㅡㅡㅡㅡㅡㅡ여기서부터 다시 정리ㅡㅡㅡㅡㅡㅡㅡ
+
+ㅡㅡㅡㅡㅡㅡㅡ여기서부터 다시 정리ㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+태그들:
+
+- `<form>` :
+  - 입력 받은 데이터와 함께 서버에 요청해주는 태그.
+  - 속성:
+    - action : 요청하는 서버의 주소를 설정하는 속성
+    - method :
+- `<input>` :
+  - 다양한 타입을 가지는 입력 데이터 필드를 만드는 태그.
+  - type:
+    - text, checkbox, radio, range, date, 등등
+  - 속성:
+    - name: 데이터를 담을 이름. 변수명 같은것
+
+
+
+
+
+
+
+- 
 
 
 
