@@ -289,6 +289,8 @@ position 속성은 문서 상에서 요소를 배치하는 방법을 지정한�
 
 
 
+flex 내부 item들의 방향 설정
+
 - 배치 방향 설정 
   - flex-direction : 메인 축을 바꾼다. row, row-reverse, column, column-reverse 
 - 메인 축 방향 정렬 : justify-content (flex-start, flex-end, center, space-between (맨 끝에 배치 후 사이간격 같게), space-around(요소 양 옆 간격이 같게), space-evenly(맨 끝부터 간격이 완전 똑같게))
@@ -317,4 +319,4 @@ container, rows, column으로 컨텐츠를 배치하고 정렬
   - Extra large (xl) : 1200px 이상
   - Extra extra large (xxl) : 1400px 이상
 - nesting: row 안에 다시 row가 들어가는 개념
-- offset
+- offset : 해당 col의 왼쪽에 공백을 만든다.
