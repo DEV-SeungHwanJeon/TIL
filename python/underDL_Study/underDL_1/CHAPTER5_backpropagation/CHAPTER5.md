@@ -18,7 +18,7 @@
 
 문제: 1개에 100원짜리 사과 2개, 1개에 150원짜리 귤 3개를 구매하려 한다. 소비세가 10%일 때 지불 금액을 구하시오
 
-![image-20210212101457876](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212101457876.png)
+![image-20210212101457876](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212101457876.png)
 
 100 * 2 = 200
 
@@ -58,7 +58,7 @@
 
 y=f(x)의 계산 그래프:
 
- ![image-20210212113634712](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212113634712.png)
+ ![image-20210212113634712](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212113634712.png)
 
 국소적 미분: 순전파 때의 y=f(x) 계산의 미분(x에 대한 y의 미분)을 구함
 
@@ -94,11 +94,11 @@ dz/dx = (dz/dt) * (dt/dx) = 2t * 1 = 2(x+y)
 
 `#계산그래프로 표현`
 
-![image-20210212120021693](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212120021693.png)
+![image-20210212120021693](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212120021693.png)
 
 맨 왼쪽 역전파는 (dz/dz) * (dz/dt) * (dt/dx) = (dz/dt) * (dt/dx) = (dz/dx) 가 성립되어 x에 대한 z의 미분이 된다. 즉, 역전파가 하는 일은 연쇄법칙의 원리와 같다.
 
-![image-20210212120631677](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212120631677.png)
+![image-20210212120631677](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212120631677.png)
 
 연쇄법칙의 결과와 동일하게 2(x+y) 가 나온다.
 
@@ -116,7 +116,7 @@ z = x + y
 
 미분(해석적): dz/dx = 1 , dz/dy = 1
 
- ![image-20210212130611567](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212130611567.png)
+ ![image-20210212130611567](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212130611567.png)
 
    순전파          	 		 	 	 	 		               역전파
 
@@ -124,7 +124,7 @@ z = x + y
 
 덧셈 노드의 역전파는 1을 곱하기만 할 뿐이므로 입력된 값을 그대로 다음 노드로 보내게 된다.
 
- ![image-20210212130952686](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212130952686.png)
+ ![image-20210212130952686](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212130952686.png)
 
 10 + 5 = 15 라는 계산이 있고, 역전파 시 상류에서 1.3이라는 값이 흘러온다.
 
@@ -138,13 +138,13 @@ z= x* y
 
 미분(해석적) : dz/dx = y , dz/dy = x
 
- ![image-20210212131124646](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212131124646.png)
+ ![image-20210212131124646](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212131124646.png)
 
   순전파          	 		 	 	 	 		               역전파
 
 곱셈 노드 역전파는 상류의 값에 순전파 때의 입력 신호들을 '서로 바꾼 값'을 곱해서 하류로 보낸다.
 
- ![image-20210212131240674](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212131240674.png)
+ ![image-20210212131240674](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212131240674.png)
 
 10 x 5 = 50 라는 계산이 있고, 역전파 시 상류에서 1.3이라는 값이 흘러온다.
 
@@ -154,13 +154,13 @@ z= x* y
 
 변수: 사과의 가격, 사과의 개수, 소비세
 
-![image-20210212131619078](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212131619078.png)
+![image-20210212131619078](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212131619078.png)
 
 미분의 결과는 해당 변수가 1단위만큼 바뀐다면 결과값에 영향을 주는 정도로 해석할 수 있다.
 
 
 
-문제:  ![image-20210212132330464](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212132330464.png)
+문제:  ![image-20210212132330464](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212132330464.png)
 
 
 
@@ -257,7 +257,7 @@ class AddLayer:
 
 `backward()`에서는 상류에서 내려온 미분(dout)을 그대로 하류로 흘린다.
 
- ![image-20210212163014189](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212163014189.png)
+ ![image-20210212163014189](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212163014189.png)
 
 ```python
 apple, apple_num = 100, 2
@@ -298,11 +298,11 @@ ReLU와 Sigmoid 계층을 구현해보자.
 
 ### 5.5.1 ReLU 계층
 
-ReLU 함수:![image-20210212164314458](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212164314458.png)  미분: ![image-20210212164322216](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212164322216.png)
+ReLU 함수:![image-20210212164314458](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164314458.png)  미분: ![image-20210212164322216](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164322216.png)
 
 즉, 순전파 때의 입력인 x가 0보다 트면 역전파는 상류의 값을 그대로 하류로 흘린다. 하지만 순전파 때 x가 0 이하면 역전파 대는 하류로 신호를 보내지 않는다.
 
- ![image-20210212164501679](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212164501679.png)
+ ![image-20210212164501679](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164501679.png)
 
 ```python
 class Relu:
@@ -333,13 +333,13 @@ mask 는 인스턴스 변수로 True/False로 구성된 넘파이 배열이다. 
 
 ### 5.5.2 Sigmoid 계층
 
-시그모이드 함수: ![image-20210212164844120](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212164844120.png)
+시그모이드 함수: ![image-20210212164844120](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164844120.png)
 
 
 
 계산 그래프 (순전파):
 
- ![image-20210212195945833](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212195945833.png)
+ ![image-20210212195945833](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212195945833.png)
 
 `exp` 노드는 y = exp(x) 계산을 수행한다.
 
@@ -353,15 +353,15 @@ mask 는 인스턴스 변수로 True/False로 구성된 넘파이 배열이다. 
 
 `/`노드( y = 1/x ) 를 미분하면 
 
- ![image-20210212200214991](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212200214991.png)
+ ![image-20210212200214991](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212200214991.png)
 
-가 된다. 즉, 역전파 때 상류에서 흘러온 값에 `순전파의 출력을 제곱한 후 마이너스를 붙인 값`을 곱해서 하류로 전달한다. ![image-20210212201726607](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212201726607.png)
+가 된다. 즉, 역전파 때 상류에서 흘러온 값에 `순전파의 출력을 제곱한 후 마이너스를 붙인 값`을 곱해서 하류로 전달한다. ![image-20210212201726607](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212201726607.png)
 
 
 
 #### 2단계
 
-`+`노드는 상류의 값을 여과없이 하류로 내보낸다. ![image-20210212201812116](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212201812116.png)
+`+`노드는 상류의 값을 여과없이 하류로 내보낸다. ![image-20210212201812116](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212201812116.png)
 
 
 
@@ -369,25 +369,25 @@ mask 는 인스턴스 변수로 True/False로 구성된 넘파이 배열이다. 
 
 `exp`노드는 y= exp(x) 연산을 수행한다.
 
- exp(x) 미분 값:![image-20210212201903699](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212201903699.png)
+ exp(x) 미분 값:![image-20210212201903699](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212201903699.png)
 
-상류의 값에 순전파 때의 출력을 곱해 하류로 전파한다. ![image-20210212201958064](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212201958064.png)
+상류의 값에 순전파 때의 출력을 곱해 하류로 전파한다. ![image-20210212201958064](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212201958064.png)
 
 
 
 #### 4단계
 
-`x`노드는 순전파 때의 값을 서로 바꿔 곱한다. ![image-20210212202033178](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212202033178.png)
+`x`노드는 순전파 때의 값을 서로 바꿔 곱한다. ![image-20210212202033178](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212202033178.png)
 
 
 
-최종 결과인 ![image-20210212203113816](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212203113816.png) 값은 순전파의 입력 x와 출력 y만으로 계산할 수 있다. 그래서 계산 그래프의 중간 과정을 모두 묶어 단순한 sigmoid 노드 하나로 대체할 수 있다.
+최종 결과인 ![image-20210212203113816](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212203113816.png) 값은 순전파의 입력 x와 출력 y만으로 계산할 수 있다. 그래서 계산 그래프의 중간 과정을 모두 묶어 단순한 sigmoid 노드 하나로 대체할 수 있다.
 
- ![image-20210212203159515](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212203159515.png)
+ ![image-20210212203159515](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212203159515.png)
 
 계산 그래프와 간소화 버전의 결과는 같지만 간소화 버전은 역전파 과정의 중간 계산들을 생략하여 더 효율적인 계산이다.
 
-또한  ![image-20210212203431391](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212203431391.png) 를 통하여 시그모이드 계층의 역전파는 순전파의 출력(y)만으로 계산할 수 있다는 것을 알 수 있다.
+또한  ![image-20210212203431391](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212203431391.png) 를 통하여 시그모이드 계층의 역전파는 순전파의 출력(y)만으로 계산할 수 있다는 것을 알 수 있다.
 
 ```python
 class Sigmoid:
@@ -396,11 +396,13 @@ class Sigmoid:
         
     def forward(self, x):
         out = 1 / (1 + np.exp(-x))
+        # 순전파의 출력을 인스턴스 변수 out에 보관
         self.out = out
         
         return out
     
 	def backward(self, dout):
+        # dL/dy * (y * (1-y))
         dx = dout * (1.0 - self.out) * self.out
         
         return dx
@@ -428,27 +430,27 @@ class Sigmoid:
 
 곱 계산 노드를 `dot`라고 하면 np.dot(X,W) + B 계산은 다음과 같다.
 
- ![image-20210212205007211](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212205007211.png)
+ ![image-20210212205007211](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212205007211.png)
 
 
 
 행렬을 사용한 역전파도 행렬의 원소마다 전개해보면 스칼라 값을 사용한 지금까지의 계산 그래프와 같은 순서로 생각할 수 있다.
 
- ![image-20210212205115668](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212205115668.png)
+ ![image-20210212205115668](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212205115668.png)
 
 
 
 W^T 의 ^T는 전치행렬을 뜻한다.
 
- ![image-20210212205209456](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212205209456.png)
+ ![image-20210212205209456](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212205209456.png)
 
 
 
-역전파 계산 흐름은 다음과 같다. ![image-20210212205325826](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212205325826.png)
+역전파 계산 흐름은 다음과 같다. ![image-20210212205325826](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212205325826.png)
 
 행렬의 형상에 주의해야 한다. 행렬의 곱에서는 대응하는 차원의 원소 수를 일치시켜야한다. X와 dL/dX는 같은 형상이고, W와 dL/dW도 같은 형상이다.
 
- ![image-20210212205856658](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212205856658.png)
+ ![image-20210212205856658](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212205856658.png)
 
 
 
@@ -462,7 +464,7 @@ W^T 의 ^T는 전치행렬을 뜻한다.
 
 데이터 N개를 묶어 순전파하는 경우(배치용 Affine 계층)를 생각해보자.
 
-![image-20210212211936190](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212211936190.png)
+![image-20210212211936190](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212211936190.png)
 
 입력 X의 형상이 (2, ) 에서 (N, 2)가 되었다. 편향은 데이터 각각에 더해진다. 그래서 역전파 때는 각 데이터의 역전파 값이 편향의 원소에 모여야 한다. (np.sum(dY, axis=0))
 
@@ -499,7 +501,7 @@ class Affine:
 
 손실 함수인 교차 엔트로피 오차도 포함하여 Softmax-withLoss 계층을 구현해보자.
 
- ![image-20210212221127000](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212221127000.png)
+ ![image-20210212221127000](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212221127000.png)
 
 Softmax 계층은 입력 (a1, a2, a3)를 정규화하여 (y1, y2, y3)를 출력한다.
 
@@ -537,7 +539,7 @@ class SoftmaxWithLoss:
 
 #### 부록 A: Softmax-with-Loss 계층의 계산 그래프
 
- ![image-20210212214545066](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212214545066.png)
+ ![image-20210212214545066](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212214545066.png)
 
 3분류를 수행한다. 이전 계층으로부터의 입력은 (a1, a2, a3) 이며 Softmax 계층은 (y1, y2, y3) 를 출력한다. 정답 레이블은 (t1, t2, t3) 이며 Cross Entropy Error계층은 손실 L을 출력한다. 역전파 결과는 ( y1 - t1, y2 - t2, y3 - t3 ) 이다.
 
@@ -545,27 +547,27 @@ class SoftmaxWithLoss:
 
 ##### A.1 순전파
 
-소프트 맥스 함수: ![image-20210212214843987](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212214843987.png) 
+소프트 맥스 함수: ![image-20210212214843987](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212214843987.png) 
 
-소프트 맥스 계층 순전파:![image-20210212215008307](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212215008307.png)
+소프트 맥스 계층 순전파:![image-20210212215008307](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212215008307.png)
 
 
 
-교차 엔트로피 오차 수식: ![image-20210212214934688](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212214934688.png) 
+교차 엔트로피 오차 수식: ![image-20210212214934688](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212214934688.png) 
 
-교차 엔트로피 오차 계층 순전파:![image-20210212215055848](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212215055848.png)
+교차 엔트로피 오차 계층 순전파:![image-20210212215055848](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212215055848.png)
 
 
 
 ##### A.2 역전파
 
-교차 엔트로피 오차 계층의 역전파: ![image-20210212215428679](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212215428679.png)
+교차 엔트로피 오차 계층의 역전파: ![image-20210212215428679](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212215428679.png)
 
 - 역전파의 초깃값, 즉 가장 오른쪽 역전파의 값은 1이다 (dL/dL=1)
 - `x` 노드의 역전파는 순전파 시 입력들의 값을 서로 바꿔 상류의 미분에 곱하고 하류로 흘린다.
 - `+` 노드에서는 상류에서 전해지는 미분을 그대로 흘린다.
 - `log` 노드의 역전파는 다음 식을 따른다.
-  -  ![image-20210212215837918](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212215837918.png)
+  -  ![image-20210212215837918](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212215837918.png)
 
 
 
@@ -576,18 +578,18 @@ class SoftmaxWithLoss:
 Softmax 계층 역전파 : 
 
 - 1단계:  앞 계층 (교차 엔트로피 오차 계층)의 역전파 값이 흘러온다.
-- 2단계: 순전파의 입력들을 서로 바꿔 곱한다. ![image-20210212220204780](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212220204780.png)
+- 2단계: 순전파의 입력들을 서로 바꿔 곱한다. ![image-20210212220204780](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212220204780.png)
 - 3단계: 순전파 때 여러 갈래로 나뉘어 흘렸다면 역전파 때는 그 반대로 흘러온 여러 값을 더한다. ( -(t1 x S) -(t2 x S) - (t3 x S) ). 이 더해진 값이 `/`노드의 역전파를 거쳐 (t1 + t2 + t3) / S 이 된다. 그런데 여기서 (t1, t2, t3)은 one-hot 벡터 이므로 t1 + t2 + t3 = 1 이 된다.
 - 4단계: `+` 노드는 그냥 흘려보내고
 - 5단계: `x` 노드는 입력을 서로 바꾼 곱셈을 한다. 
 
-![image-20210212220613091](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212220613091.png)
+![image-20210212220613091](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212220613091.png)
 
 - 6단계: `exp` 노드에서는 다음 관계식이 성립된다.
-  -  ![image-20210212220821160](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212220821160.png)
-  - 두 갈래의 입력의 합에 exp(a1) 을 곱한 수치가 여기에서 구하는 역전파이다. 
-  - ![image-20210212220953308](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212220953308.png)
-  - 최종 역전파는 y1 - t1 이다.
+  -  ![image-20210212220821160](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212220821160.png)
+  -  두 갈래의 입력의 합에 exp(a1) 을 곱한 수치가 여기에서 구하는 역전파이다. 
+  -  ![image-20210212220953308](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212220953308.png)
+  -  최종 역전파는 y1 - t1 이다.
 
 
 
@@ -616,7 +618,7 @@ Softmax 계층 역전파 :
 
 2층 신경망을 구현한다. 계층을 사용함으로써 인식 결과를 얻는 처리(predict())와 기울기를 구하는 처리(gradient()) 계층의 전파만으로 동작이 이루어진다.
 
-![image-20210212223334566](C:\Users\tmd43\AppData\Roaming\Typora\typora-user-images\image-20210212223334566.png)
+![image-20210212223334566](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212223334566.png)
 
 
 
@@ -806,4 +808,3 @@ for i in range(iters_num):
 모든 계층에서 forward와 backward라는 메서드를 구현한다. 매개변수의 기울기를 효율적으로 구할 수 있다.
 
 동작을 계층으로 모듈화한 덕분에 계층을 조합하여 원하는 신경망을 쉽게 만들 수 있다.
-
