@@ -300,7 +300,7 @@ ReLU와 Sigmoid 계층을 구현해보자.
 
 ReLU 함수:![image-20210212164314458](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164314458.png)  미분: ![image-20210212164322216](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164322216.png)
 
-즉, 순전파 때의 입력인 x가 0보다 트면 역전파는 상류의 값을 그대로 하류로 흘린다. 하지만 순전파 때 x가 0 이하면 역전파 대는 하류로 신호를 보내지 않는다.
+즉, 순전파 때의 입력인 x가 0보다 크면 역전파는 상류의 값을 그대로 하류로 흘린다. 하지만 순전파 때 x가 0 이하면 역전파 대는 하류로 신호를 보내지 않는다.
 
  ![image-20210212164501679](C:\Users\tmd43\ssafy5\TIL\python\underDL_Study\underDL_1\CHAPTER5_backpropagation\CHAPTER5.assets\image-20210212164501679.png)
 
