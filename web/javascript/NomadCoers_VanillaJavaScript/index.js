@@ -1,6 +1,19 @@
-// to do : finish this
+const title = document.querySelector("#title");
 
-const a = 221;
-let b = a - 5;
-a = 4;
-console.log(b,a)
+const CLICKED_CLASS = "clicked";
+
+function handleClick() {
+  const hasClass = title.classList.contains(CLICKED_CLASS);
+  
+  if(hasClass) {
+    title.classList.remove(CLICKED_CLASS);
+  }
+  else {
+    title.classList.add(CLICKED_CLASS);
+  }
+}
+function init() {
+  title.addEventListener("click", handleClick)
+}
+
+init();
