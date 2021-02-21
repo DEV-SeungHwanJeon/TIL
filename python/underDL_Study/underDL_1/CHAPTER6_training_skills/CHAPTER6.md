@@ -223,7 +223,11 @@ g: 기울기
 
  ![image-20210220234408677](CHAPTER6.assets/image-20210220234408677.png)
 
-결론적으로 m1(1시점1차모멘텀) = g1(1시점기울기) 가 됨으로써 기존에 m0(0시점1차모멘텀) = 0으로 인해서, m1 = 0.1 * g1 = beta1이 되어 0에 편향됨이 해결되었다.
+결론적으로 
+
+기존에 m0(0시점1차모멘텀) = 0으로 인해서, m1 = 0.1 * g1 이 되어 0에 편향되었던 문제가
+
+m1(1시점1차모멘텀) = g1(1시점기울기) 가 됨으로써 해결되었다.
 
 두번째 항부터는 뒤로 갈 수록 가장 최신 기울기가 전체 평균에 10% 정도 영향을 주니 가중이동평균 목적에 부합한다. (0.9)
 
@@ -331,15 +335,34 @@ ReLU에는 He 초깃값을 활용한다.
 
 확대와 이동의 정도도 학습을 통하여 적합한 값으로 조정해간다.
 
+
+
 - 배치정규화의 계산 그래프
 
   ![image-20210221010403134](CHAPTER6.assets/image-20210221010403134.png)
+
+
 
 ### 6.3.2 배치 정규화의 효과
 
 거의 모든 경우에서 배치 정규화를 사용할 때의 학습 진도가 빠르다.
 
 또한 가중치 초깃값이 잘 분포되어 있지 않은 경우 배치 정규화를 쓰지 않는다면 학습이 전혀 진행되지 않을 수도 있다.
+
+```python
+MultiLayerNetExtend(input_size=784, hidden_size_list=[100, 100, 100, 100, 100], output_size=10,weight_init_std=weight_init_std,use_batchnorm=True)
+```
+
+```python
+if self.use_batchnorm:
+                self.params['gamma' + str(idx)] = np.ones(hidden_size_list[idx-1])
+                self.params['beta' + str(idx)] = np.zeros(hidden_size_list[idx-1])
+                self.layers['BatchNorm' + str(idx)] = BatchNormalization(self.params['gamma' + str(idx)], self.params['beta' + str(idx)])
+```
+
+결론: 학습 시 미니배치를 단위로 데이터 분포를 평균 0, 분산이 1이 되도록 정규화한다.
+
+
 
 
 
@@ -362,6 +385,12 @@ ReLU에는 He 초깃값을 활용한다.
 
 
 손실 함수를 줄여야 하지만 손실함수에 가중치의 제곱 노름(L2 노름)을 손실함수에 더한 값을 손실함수로 사용한다면 가중치의 값이 커지는 것을 억제할 수 있다.
+
+-> 
+
+
+
+
 
 하이퍼파라미터 '람다'가 클수록 정규화의 규제가 커진다.
 

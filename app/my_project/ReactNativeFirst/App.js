@@ -43,8 +43,8 @@ class JSH extends Component {
         <Image source= {JSHImg} style={{width:400, height:350}}/>
       </View>
     )
-  }
-}
+  };
+};
 
 const App = () => {
   const CUBE_NUMBER = 4
@@ -52,33 +52,29 @@ const App = () => {
 
 
   function 랜덤생성() {
-    while (true) {
-      const number1 = Math.floor(Math.random() * CUBE_NUMBER);
-      const number2 = Math.floor(Math.random() * CUBE_NUMBER);
-      if (큐브[number1][number2]===0){
-        break
-      }
-  }
-
+    // while (true) {
+    //   const number1 = Math.floor(Math.random() * CUBE_NUMBER);
+    //   const number2 = Math.floor(Math.random() * CUBE_NUMBER);
+    //   if (큐브[number1][number2]===0){
+    //     break
+    //   };
+  };
 
   function 위버튼클릭() {
-    
-    }
+    const num1 = 0
   }
 
   function 아래버튼클릭() {
-
+    const num1 = 0
   }
 
   function 오른버튼클릭() {
-
+    const num1 = 0
   }
 
   function 왼버튼클릭() {
-
-  }
-
-
+    const num1 = 0
+  };
 
   return (
     <>
@@ -108,6 +104,11 @@ const styles = StyleSheet.create({
     height: 10,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  
+  block: {
+    width:10,
+    height:10,
   },
 
   lrbtnContainer : {
