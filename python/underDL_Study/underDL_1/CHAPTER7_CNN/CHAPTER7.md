@@ -383,22 +383,50 @@ class SimpleConvNet:
         self.last_layer = SoftmaxWithLoss()
 ```
 
-
-
-
+추론(예측)을 수행하는 predict 메서드, 손실 함수의 값을 구하는 loss 메서드 구현
 
 ```python
+    # 추론(예측)
     def predict(self, x):
-        """추론을 수행"""
+        # layers에 추가한 계층을 맨 앞에서부터 차례로 forward 메서드 호출하여 그 결과를 다음 계층에 전달 ( x = func(x) )
         for layer in self.layers.values():
             x = layer.forward(x)
         return x
+	
+    # 손실 함수 계산
+    def loss(self, x, t): # x: 입력 데이터, t: 정답 레이블
+        y = self.predict(x) # y: 추론(예측) 레이블
+        return self.last_layer.forward(y, t) # 추론과 정답으로 손실 계산
+```
 
-    def loss(self, x, t):
-        """손실함수 값 계산"""
-        y = self.predict(x)
-        return self.last_layer.forward(y, t)
+오차역전파법으로 기울기 구하기 구현
 
+```python
+    def gradient(self, x, t):
+        # 순전파
+        self.loss(x, t)
+
+        # 역전파
+        dout = 1
+        dout = self.last_layer.backward(dout)
+
+        layers = list(self.layers.values())
+        layers.reverse()
+        for layer in layers:
+            dout = layer.backward(dout)
+
+        # 각 가중치 매개변수의 기울기를 저장
+        grads = {}
+        grads['W1'] = self.layers['Conv1'].dW
+        grads['b1'] = self.layers['Conv1'].db
+        grads['W2'] = self.layers['Affine1'].dW
+        grads['b2'] = self.layers['Affine1'].db
+        grads['W3'] = self.layers['Affine2'].dW
+        grads['b3'] = self.layers['Affine2'].db
+
+        return grads
+    
+    # 정확도 계산
     def accuracy(self, x, t, batch_size=100):
         if t.ndim != 1:
             t = np.argmax(t, axis=1)
@@ -413,32 +441,173 @@ class SimpleConvNet:
             acc += np.sum(y == tt)
 
         return acc / x.shape[0]
-
-    def gradient(self, x, t):
-        """오차역전파법으로 기울기를 구함"""
-        # 순전파
-        self.loss(x, t)
-
-        # 역전파
-        dout = 1
-        dout = self.last_layer.backward(dout)
-
-        layers = list(self.layers.values())
-        layers.reverse()
-        for layer in layers:
-            dout = layer.backward(dout)
-
-        # 결과 저장
-        grads = {}
-        grads['W1'] = self.layers['Conv1'].dW
-        grads['b1'] = self.layers['Conv1'].db
-        grads['W2'] = self.layers['Affine1'].dW
-        grads['b2'] = self.layers['Affine1'].db
-        grads['W3'] = self.layers['Affine2'].dW
-        grads['b3'] = self.layers['Affine2'].db
-
-        return grads
 ```
 
 
+
+MNIST 데이터셋 학습 예제: train_convnet.py
+
+```python
+# 데이터 읽기
+(x_train, t_train), (x_test, t_test) = load_mnist(flatten=False)
+max_epochs = 20
+
+# CNN 네트워크 정의
+network = SimpleConvNet(input_dim=(1,28,28), 
+                        conv_param = {'filter_num': 30, 'filter_size': 5, 'pad': 0, 'stride': 1},
+                        hidden_size=100, output_size=10, weight_init_std=0.01)
+
+# Trainer: 신경망 훈련을 대신 해주는 클래스
+trainer = Trainer(network, x_train, t_train, x_test, t_test,
+                  epochs=max_epochs, mini_batch_size=100,
+                  optimizer='Adam', optimizer_param={'lr': 0.001},
+                  evaluate_sample_num_per_epoch=1000)
+# 학습 (verbose 값이 True(defaulf)면 train loss와 epoch별 train, test 정확도, 최종 test 정확도가 출력된다. )
+trainer.train()
+
+# 매개변수 보존 (pickle파일)
+network.save_params("params.pkl")
+print("Saved Network Parameters!")
+
+# 그래프 그리기
+markers = {'train': 'o', 'test': 's'}
+x = np.arange(max_epochs) # array([0~19]) 생성
+plt.plot(x, trainer.train_acc_list, marker='o', label='train', markevery=2)
+plt.plot(x, trainer.test_acc_list, marker='s', label='test', markevery=2)
+plt.xlabel("epochs")
+plt.ylabel("accuracy")
+plt.ylim(0, 1.0)
+plt.legend(loc='lower right')
+plt.show()
+```
+
+
+
+## 7.6 CNN 시각화하기
+
+합성곱 계층을 시각화하여 CNN이 보고 있는 것이 무엇인지 알아보도록 하자.
+
+
+
+### 7.6.1 1번째 층의 가중치 시각화하기
+
+MNIST CNN 실습의 1번째 층의 합성곱 계층의 가중치는 (30필터, 1채널, 5높이, 5너비)의 형상이었다. 이때, 이 필터를 1채널의 회색조 이미지로 시각화할 수 있다.
+
+```python
+# coding: utf-8
+
+def filter_show(filters, nx=8, margin=3, scale=10):
+    FN, C, FH, FW = filters.shape
+    # np.ceil : 각 원소 값보다 크거나 같은 가장 작은 정수 값 (천장 값)으로 올림
+    ny = int(np.ceil(FN / nx))
+	
+    fig = plt.figure()
+    fig.subplots_adjust(left=0, right=1, bottom=0, top=1, hspace=0.05, wspace=0.05)
+
+    # 각 필터마다 시각화
+    for i in range(FN):
+        ax = fig.add_subplot(ny, nx, i+1, xticks=[], yticks=[])
+        ax.imshow(filters[i, 0], cmap=plt.cm.gray_r, interpolation='nearest')
+    plt.show()
+
+
+network = SimpleConvNet()
+# 무작위(랜덤) 초기화 후의 가중치
+filter_show(network.params['W1'])
+
+# 학습된 가중치
+network.load_params("params.pkl")
+filter_show(network.params['W1'])
+```
+
+1번째 층의 합성곱 계층의 가중치 ( 가중치의 원소는 실수이지만, 이미지에서는 가장 작은 값(0)은 검은색, 가장 큰 값(255)은 흰색으로 정규화하여 표시함)
+
+![image-20210228004111980](CHAPTER7.assets/image-20210228004111980.png)
+
+학습 전 필터는 무작위로 초기화되고 있어 흑백의 정도에 규칙성이 없다. 학습을 마친 필터는 규칙성이 있는 이미지가 되었다.
+
+이 규칙성 있는 필터는 에지(색상이 바뀐 경계선)와 블롭(국소적으로 덩어진 영역) 등을 보고 있다. 
+
+예를 들어, 왼쪽 절반이 흰색이고 오른쪽 절반이 검은색인 필터는 세로 방향의 에지에 반응하는 필터이다.
+
+![image-20210228004320940](CHAPTER7.assets/image-20210228004320940.png)
+
+이러한 합성곱 계층의 필터는 에지나 블롭 등의 원시적인 정보를 추출할 수 있다.
+
+
+
+### 7.6.2 층 깊이에 따른 추출 정보 변화
+
+1번째 층은 에지나 블롭 등의 저수준 정보가 추출됐다.
+
+계층이 깊어질수록 추출되는 정보(정확히는 강하게 반응하는 뉴런)는 더 추상화된다.
+
+8층 구조의 AlexNet:
+
+![image-20210228004515914](CHAPTER7.assets/image-20210228004515914.png)
+
+뉴런이 반응하는 것:
+
+​	1번째 층: 에지와 블롭
+
+​	3번째 층: 텍스처
+
+​	5번째 층: 사물의 일부
+
+​	마지막 완전연결계층: 사물의 클래스
+
+
+
+즉, 층이 깊어지면서 뉴런이 반응하는 대상이 단순한 모양에서 '고급' 정보로 변화해간다. 사물의 '의미'를 이해하도록 변화하는 것이다.
+
+
+
+
+
+## 7.7 대표적인 CNN
+
+
+
+### 7.7.1 LeNet
+
+손글씨 숫자를 인식하는 네트워크
+
+합성곱 계층과 풀링 계층(단순히 원소를 줄이기만 하는 서브샘플링 계층)을 반복하고, 마지막으로 완전연결 계층을 거치면서 결과를 출력
+
+![image-20210228004810909](CHAPTER7.assets/image-20210228004810909.png)
+
+현재의 CNN과 LeNet의 차이점:
+
+- 활성화 함수
+  - LeNet: 시그모이드
+  - 현재: ReLU
+- 풀링 (중간 데이터의 크기 줄이기)
+  - LeNet: 서브샘플링
+  - 현재: 최대 풀링(Max Pooling)
+
+
+
+### 7.7.2 AlexNet
+
+![image-20210228004943164](CHAPTER7.assets/image-20210228004943164.png)
+
+합성곱 계층과 풀링 계층을 거듭하며 마지막으로 완전연결 계층을 거쳐 결과를 출력한다.
+
+LeNet과 AlexNet의 차이점:
+
+- 활성화 함수
+  - LeNet: 시그모이드
+  - AlexNet: ReLU
+- AlexNet은 LRN(Local Response Normalization)이라는 국소적 정규화를 실시하는 계층을 이용한다.
+- dropout을 사용한다.
+
+
+
+
+
+## 7.8 정리
+
+- CNN은 지금까지의 완전연결 계층 네트워크에 '합성곱 계층'과 '풀링 계층'을 새로 추가한다.
+- 합성곱 계층과 풀링 계층은 im2col (이미지를 행렬로 전개하는 함수)을 이용하면 간단하고 효율적으로 구현할 수 있다.
+- CNN을 시각화해보면 계층이 깊어질수록 고급 정보가 추출되는 모습을 확인할 수 있다.
 
