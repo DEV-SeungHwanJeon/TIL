@@ -180,5 +180,265 @@ CNN에서는 필터의 매개변수가 그동안의 "가중치" 역할을 한다
 
 ### 7.4.1 4차원 배열
 
+```python
+# 생성
+x = np.random.rand(10, 1, 28, 28)
+x.shape  
+# (10, 1, 28, 28)
+# 데이터 수, 채널 수, 높이, 너비
+```
+
+
+
+### 7.4.2 im2col로 데이터 전개하기
+
+im2col이라는 '트릭'을 사용하면 합성곱 연산의 구현은 단순해진다.
+
+im2col은 입력 데이터를 필터링(가중치 계산)하기 좋게 전개하는 함수이다.
+
+입력 데이터에 im2col을 적용하면 2차원 행렬로 바뀐다. (배치 안의 데이터 수까지 포함한 4차원 데이터를 2차원으로 변환한다.)
+
+![image-20210227202909418](CHAPTER7.assets/image-20210227202909418.png)
+
+위 그림에서는 보기 좋도록 스트라이드를 크게 잡아 필터의 적용 영역이 겹치지 않도록 했다.
+
+필터 적용 영역이 겹치는 경우, im2col로 전개한 후의 원소 수가 원래 블록의 원소 수보다 많아진다. 그래서 im2col을 사용해 구현하면 메모리를 더 많이 소비하는 단점이 있다.
+
+하지만 문제를 행렬 계산으로 만들면 선형 대수 라이브러리를 활용하여 계산 속도와 효율을 높일 수 있다.
+
+im2col로 입력 데이터를 전개한 다음에는 합성곱 계층의 필터(가중치)를 1열로 전개하고, 두 행렬의 곱을 계산하면 된다.
+
+![image-20210227213715286](CHAPTER7.assets/image-20210227213715286.png)
+
+### 7.4.3 합성곱 계층 구현하기
+
+```python
+def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
+    """다수의 이미지를 입력받아 2차원 배열로 변환한다(평탄화).
+"""
+    N, C, H, W = input_data.shape
+    # 출력 차원 계산
+    out_h = (H + 2*pad - filter_h)//stride + 1
+    out_w = (W + 2*pad - filter_w)//stride + 1
+    # np.pad(array, pad_width, mode)
+    img = np.pad(input_data, [(0,0), (0,0), (pad, pad), (pad, pad)], 'constant')
+    col = np.zeros((N, C, filter_h, filter_w, out_h, out_w))
+
+    for y in range(filter_h):
+        y_max = y + stride*out_h
+        for x in range(filter_w):
+            x_max = x + stride*out_w
+            col[:, :, y, x, :, :] = img[:, :, y:y_max:stride, x:x_max:stride]
+
+    col = col.transpose(0, 4, 5, 1, 2, 3).reshape(N*out_h*out_w, -1)
+    return col
+```
+
+im2col은 필터 크기, 스트라이드, 패딩을 고려하여 입력 데이터를 2차원 배열로 전개한다.
+
+```python
+from common.util import im2col
+
+x1 = np.arandom.rand(1, 3, 7, 7) # ( 데이터 수, 채널 수, 높이, 너비)
+col1 = im2col(x1, 5, 5, stride=1, pad=0)
+print(col1.shape) # (9, 75)
+
+x2 = np.random.rand(10, 3, 7, 7) # 데이터 10개
+col2 = im2col(x2, 5, 5, stride=1, pad=0)
+print(col2.shape) # (90, 75)
+```
+
+배치 크기가 1, 10이라는 차이가 있지만 두 경우 모두 2번째 차원의 원소는 75개이다. 이 값은 필터의 원소 수와 같다(채널 3개, 5 x 5 데이터)
+
+
+
+합성곱 계층 Convolution 클래스 구현
+
+```python
+class Convolution:
+    def __init__(self, W, b, stride=1, pad=0):
+        self.W = W
+        self.b = b
+        self.stride = stride
+        self.pad = pad
+        
+    def forward(self, x):
+        FN, C, FH, FW = self.W.shape
+        N, C, H, W = x.shape
+        out_h = int(1 + (H + 2 * self.pad - FH) / self.stride)
+        out_w = int(1 + (W + 2 * self.pad - FW) / self.stride)
+        
+        col = im2col(x, FH, FW, self.stride, self.pad) # 입력 데이터 im2col 전개
+        col_W = self.W.reshape(FN, -1).T # 필터 전개
+        out = np.dot(col, col_W) + self.b
+        
+        out = out.reshape(N, out_h, out_w, -1).transpose(0, 3, 1, 2)
+        
+        return out
+```
+
+합성곱 계층은 필터(가중치), 편향, 스트라이드, 패딩을 인수로 받아 초기화한다.
+
+필터의 형상은 (FN필터 개수, C채널, FH필터 높이, FW필터 너비) .
+
+forward 구현의 마지막에서는 출력 데이터를 적절한 형상으로 바꿔준다. numpy의 transpose함수는 다차원 배열의 축 순서를 바꿔주는 함수이다.
+
+합성곱 계층의 역전파에서는 im2col을 역으로 처리해야한다.
+
+
+
+### 7.4.4 풀링 계층 구현하기
+
+풀링 적용 영역을 채널마다 독립적으로 전개한다.
+
+Maxpooling의 모습:
+
+![image-20210227234500454](CHAPTER7.assets/image-20210227234500454.png)
+
+풀링 계층의 forward 처리 흐름:
+
+```python
+class pooling:
+    def __init__(self, pool_h, pool_w, stride=1, pad=0):
+        self.pool_h = pool_h
+        self.pool_w = pool_w
+        self.stride = stride
+        self.pad = pad
+        
+    def forward(self, x):
+        N, C, H, W = x.shape
+        out_h = int(1 + (H - self.pool_h) / self.stride)
+        out_w = int(1 + (W - self.pool_w) / self.stride)
+        
+	# 전개 (1)
+    col = im2col(x, self.pool_h, self.pool_w, self.stride, self.pad)
+    col = col.reshape(-1, self.pool_h*self.pool_w)
+    
+    # 최댓값 (2)
+    out = np.max(col, axis=1)
+    
+    # 성형 (3)
+    out = out.reshape(N, out_h, out_w, C).transpose(0, 3, 1, 2)
+    
+    return out
+```
+
+np.max 함수는 인수로 축(axis)을 지정하면 지정 축마다 최댓값을 구할 수 있다. 
+
+axis=1이면 입력 x의 1번째 차원의 축마다 최댓값을 구한다.
+
+
+
+## 7.5 CNN 구현하기
+
+Convolution-ReLU-Pooling-Affine-ReLU-Affine-Softmax 순서의 CNN 네트워크 구현.
+
+- 초기화 때 받는 인수
+  - input_dim : 입력 데이터(채널 수, 높이, 너비)의 차원
+  - conv_param : 합성곱 계층의 하이퍼파라미터(딕셔너리)
+    - filter_num : 필터 수
+    - filter_size : 필터 크기
+    - stride : 스트라이드
+    - pad : 패딩
+    - hidden_size : 은닉층(완전연결)의 뉴런 수
+    - output_size : 출력층(완전연결)의 뉴런 수
+    - weight_init_std : 초기화 때의 가중치 표준편차
+
+```python
+class SimpleConvNet:
+    def __init__(self, input_dim=(1, 28, 28), conv_param={'filter_num': 30, 'filter_size': 5, 'pad': 0, 'stride': 1}, hidden_size=100, output_size=10, weight_init_std=0.01):
+        # 나중에 쓰기 쉽도록 초기화 인수로 주어진 하이퍼파라미터를 딕셔너리에서 꺼낸다.
+        # 합성곱 계층의 출력 크기를 계산한다.
+        filter_num = conv_param['filter_num']
+        filter_size = conv_param['filter_size']
+        filter_pad = conv_param['pad']
+        filter_stride = conv_param['stride']
+        input_size = input_dim[1]
+        conv_output_size = (input_size - filter_size + 2*filter_pad) / filter_stride + 1
+        pool_output_size = int(filter_num * (conv_output_size/2) * (conv_output_size/2))
+        
+        # 가중치 매개변수 초기화
+        self.params = {}
+        self.params['W1'] = weight_init_std * \
+            np.random.randn(filter_num, input_dim[0], filter_size, filter_size)
+        self.params['b1'] = np.zeros(filter_num)
+        self.params['W2'] = weight_init_std * \
+            np.random.randn(pool_output_size, hidden_size)
+        self.params['b2'] = np.zeros(hidden_size)
+        self.params['W3'] = weight_init_std * \
+            np.random.randn(hidden_size, output_size)
+        self.params['b3'] = np.zeros(output_size)
+        
+        # CNN을 구성하는 계층들을 생성
+        self.layers = OrderedDict()
+        self.layers['Conv1'] = Convolution(self.params['W1'],
+                                           self.params['b1'],
+                                           conv_param['stride'],
+                                           conv_param['pad'])
+        self.layers['Relu1'] = Relu()
+        self.layers['Pool1'] = Pooling(pool_h=2, pool_w=2, stride=2)
+        self.layers['Affine1'] = Affine(self.params['W2'], self.params['b2'])
+        self.layers['Relu2'] = Relu()
+        self.layers['Affine2'] = Affine(self.params['W3'], self.params['b3'])
+        self.last_layer = SoftmaxWithLoss()
+```
+
+
+
+
+
+```python
+    def predict(self, x):
+        """추론을 수행"""
+        for layer in self.layers.values():
+            x = layer.forward(x)
+        return x
+
+    def loss(self, x, t):
+        """손실함수 값 계산"""
+        y = self.predict(x)
+        return self.last_layer.forward(y, t)
+
+    def accuracy(self, x, t, batch_size=100):
+        if t.ndim != 1:
+            t = np.argmax(t, axis=1)
+
+        acc = 0.0
+
+        for i in range(int(x.shape[0] / batch_size)):
+            tx = x[i*batch_size:(i+1)*batch_size]
+            tt = t[i*batch_size:(i+1)*batch_size]
+            y = self.predict(tx)
+            y = np.argmax(y, axis=1)
+            acc += np.sum(y == tt)
+
+        return acc / x.shape[0]
+
+    def gradient(self, x, t):
+        """오차역전파법으로 기울기를 구함"""
+        # 순전파
+        self.loss(x, t)
+
+        # 역전파
+        dout = 1
+        dout = self.last_layer.backward(dout)
+
+        layers = list(self.layers.values())
+        layers.reverse()
+        for layer in layers:
+            dout = layer.backward(dout)
+
+        # 결과 저장
+        grads = {}
+        grads['W1'] = self.layers['Conv1'].dW
+        grads['b1'] = self.layers['Conv1'].db
+        grads['W2'] = self.layers['Affine1'].dW
+        grads['b2'] = self.layers['Affine1'].db
+        grads['W3'] = self.layers['Affine2'].dW
+        grads['b3'] = self.layers['Affine2'].db
+
+        return grads
+```
+
 
 
