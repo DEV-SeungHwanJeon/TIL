@@ -1053,3 +1053,539 @@ print(person);
 
 
 
+
+
+## 단축 평가 (short-circuit evaluation) 논리 계산법
+
+
+
+함수에서 파라미터 값이 제대로 주어졌을 때만 해당 값을 조회하고, 그렇지 않을 때는 그냥 undefined를 반환하게 한다.
+
+```javascript
+const dog = {
+  name: '멍멍이'
+};
+
+function getName(animal) {
+  if (animal) {
+    return animal.name;
+  }
+  return undefined;
+}
+
+const name = getName();
+console.log(name);
+```
+
+이러한 코드를 논리 연산자를 사용하면 코드를 단축시킬 수 있다.
+
+
+
+### &&연산자로 코드 단축시키기
+
+```javascript
+/*
+function getName(animal) {
+  if (animal) {
+    return animal.name;
+  }
+  return undefined;
+}
+*/
+function getName(animal) {
+  return animal && animal.name;
+}
+```
+
+A && B 연산자를 사용하게 될 때에는 A가 Truthy한 값이라면, B가 결과 값이 된다. 반면, A 가 Falsy한 값이라면 결과는 A가 된다.
+
+&& 연산자의 속성을 잘 알아두면, 특정 값이 유효할때에만 어떤 값을 조회하는 작업을 해야할 때 유용하다.
+
+
+
+### ||연산자로 코드 단축시키기
+
+만약 어떤 값이 Falsy 하다면 대체로 사용할 값을 지정해줄 때 유용하게 쓰인다.
+
+```javascript
+const namelessDog = {
+  name: ''
+};
+
+/*
+function getName(animal) {
+  const name = animal && animal.name;
+  if (!name) {
+    return '이름이 없는 동물입니다';
+  }
+  return name;
+}
+*/
+function getName(animal) {
+  const name = animal && animal.name;
+  return name || '이름이 없는 동물입니다.';
+}
+
+const name = getName(namelessDog);
+console.log(name); // 이름이 없는 동물입니다.
+```
+
+A||B 는 만약 A가 Truthy 할 경우 A가 된다. 반면, A가 Falsy 하다면 결과는 B가 된다.
+
+
+
+
+
+## 함수의 기본 파라미터
+
+함수의 기본 파라미터를 설정하는 방법
+
+```javascript
+// ES5
+function calculateCircleArea(r) {
+    const radius = r || 1;
+    return Math.PI * radius * radius;
+}
+
+// ES6
+function calculateCircleArea(r = 1) {
+    return Math.PI * r * r;
+}
+
+// 화살표 함수에서도 가능
+const calculateCircleArea = (r = 1) => Math.PI * r * r;
+
+const area = calculateCircleArea();
+console.log(area); // 3.141592
+```
+
+
+
+
+
+## 조건문 더 스마트하게 쓰기
+
+
+
+### 특정 값이 여러 값 중 하나인지 확인할 때
+
+```javascript
+/*
+function isAnimal(name) {
+    return (
+    text === '고양이' || text === '개' || text === '거북이' || text === '너구리');
+}
+*/
+
+function isAnimal(name) {
+    const animals = ['고양이', '개', '거북이', '너구리'];
+    return animals.includes(name);
+}
+
+console.log(isAnimal('개')); // true
+console.log(isAnimal('노트북')) // false
+```
+
+
+
+### 값에 따라 다른 결과물을 반환해야 할 때
+
+```javascript
+function getSound(animal) {
+    const sounds = {
+        개: '멍멍!',
+        고양이: '야옹~',
+        참새: '짹짹',
+        비둘기: '구구 구 구'
+    };
+    return sounds[animal] || '...?';
+}
+
+console.log(getSound('개'));
+```
+
+
+
+- 값에 따라 실행해야하는 코드 구문이 다를 때
+
+  ```javascript
+  function makeSound(animal) {
+      const tasks = {
+          개() {
+              console.log('멍멍');
+          },
+          고양이() {
+              console.log('고양이');
+          }
+      };
+      if (!tasks[animal]) {
+          console.log('...?');
+          return;
+      }
+      tasks[animal]();
+  }
+  
+  makeSound('개');
+  ```
+
+  
+
+## 비구조화 할당 (구조분해) 문법
+
+비구조화 할당 문법을 사용하면 객체 안에 있는 값을 추출해서 변수 혹은 상수로 바로 선언해줄 수 있다.
+
+```javascript
+const object = { a: 1, b: 2};
+
+const { a, b } = object;
+
+console.log(a); // 1
+console.log(b); // 2
+```
+
+함수의 파라미터에서도 비구조화 할당이 가능하다.
+
+```javascript
+const object = { a: 1, b: 2};
+
+function print({a, b}) {
+    console.log(a);
+    console.log(b);
+}
+
+print(object);
+```
+
+
+
+### 비구조화 할당시 기본값 설정
+
+```javascript
+const object = { a: 1 };
+
+function print({ a, b = 2}) {
+    console.log(a);
+    console.log(b);
+}
+
+print(object);
+```
+
+함수가 아닌 변수, 상수 선언에서도 활용할 수 있다.
+
+```javascript
+const object = {a: 1};
+
+const { a, b=2} = object;
+```
+
+
+
+### 비구조화 할당시 이름 바꾸기
+
+```javascript
+const animal = {
+    name: '멍멍이',
+    type: '개'
+};
+
+const { name: nickname } = animal
+// animal 객체 안에 있는 name을 nickname이라고 선언한다는 뜻
+```
+
+
+
+### 배열 비구조화 할당
+
+비구조화 할당을 배열에서 해보자.
+
+```javascript
+const array = [1, 2];
+const [one, two = 0] = array;
+// 기본값 지정이 가능
+console.log(one); // 1
+console.log(two); // 2
+```
+
+
+
+### 깊은 값 비구조화 할당
+
+객체의 깊숙한 곳에 들어있는 값을 꺼내는 방법
+
+```javascript
+const deepObject = {
+    state: {
+        information: {
+            name: 'velopert',
+            languages: ['korean','english','chinese']
+        }
+    },
+    value: 5
+};
+
+// name, languages, value 값들을 밖으로 꺼내주고 싶다면?
+// 방법 1: 비구조화 할당 문법을 두번 사용
+const { name, languages } = deepObject.state.information;
+const { value } = deepObject;
+
+// ES6의 object-shorthand 문법
+const extracted = {
+    name,
+    languages,
+    value
+}
+/*
+const extracted = {
+    name: name,
+    languages: languages,
+    value: value
+}
+와 같다
+*/
+
+// 방법 2
+const {
+    state: {
+        information: { name, languages },
+    },
+    value
+} = deepObject;
+
+const extracted = {
+    name,
+    languages,
+    value
+};
+```
+
+
+
+## spread와 rest
+
+ES6에서 도입된 spread와 rest에 대하여 알아보자.
+
+
+
+### spread
+
+객체 혹은 배열을 펼칠 수 있다.
+
+```javascript
+const slime = {
+  name: '슬라임'
+};
+
+const cuteSlime = {
+    ...slime,
+    attribute: 'cute'
+};
+/*
+const cuteSlime = {
+  name: '슬라임',
+  attribute: 'cute'
+};
+*/
+
+const purpleCuteSlime = {
+    ...cuteSlime,
+    color: 'purple'
+};
+/*
+const purpleCuteSlime = {
+  name: '슬라임',
+  attribute: 'cute',
+  color: 'purple'
+};
+*/
+console.log(slime);
+console.log(cuteSlime);
+console.log(purpleCuteSlime);
+```
+
+이렇게 기존의 것을 건들이지 않고, 새로운 객체를 만들 때 사용할 수 있는 유용한 문법이 spread이다.
+
+
+
+spread 연산자는 배열에서도 사용할 수 있다.
+
+```javascript
+const animals = ['개', '고양이', '참새'];
+const anotherAnimals = [...animals, '비둘기'];
+console.log(animals);
+console.log(anotherAnimals);
+
+// 배열에서 spread 연산자를 여러 번 사용할 수도 있다.
+const spreadNumbers = [...numbers, 1000, ...numbers];
+```
+
+기존의 animals 는 건들이지 않으면서, 새로운 anotherAnimals 배열에 animals 가 갖고 있는 내용을 모두 집어넣고, 추가적으로 항목을 넣었다.
+
+
+
+
+
+
+
+
+
+### rest
+
+rest는 객체, 배열, 그리고 함수의 파라미터에서 사용이 가능하다.
+
+
+
+- 객체에서의 rest
+
+```javascript
+const purpleCuteSlime = {
+  name: '슬라임',
+  attribute: 'cute',
+  color: 'purple'
+};
+
+const { color, ...rest } = purpleCuteSlime;
+console.log(color); //purple
+console.log(rest); //Object {name: "슬라임", attribute: "cute"}
+```
+
+rest 안에 color값을 제외한 값이 들어있다.
+
+rest는 객체와 배열에서 사용할 때는 비구조화 할당 문법과 함께 사용된다. 또한 추출한 값의 이름이 꼭 rest일 필요는 없다.
+
+```javascript
+const purpleCuteSlime = {
+  name: '슬라임',
+  attribute: 'cute',
+  color: 'purple'
+};
+
+const { color, ...cuteSlime } = purpleCuteSlime;
+console.log(color); //purple
+console.log(cuteSlime); //Object {name: "슬라임", attribute: "cute"}
+
+const { attribute, ...slime } = cuteSlime;
+console.log(attribute);  //cute
+console.log(slime);  //Object {name: "슬라임"}
+```
+
+
+
+- 배열에서의 rest
+
+```javascript
+const numbers = [0, 1, 2, 3, 4, 5, 6];
+const [one, ...rest] = numbers;
+//const [...rest, last] = numbers;는 불가능
+console.log(one);
+console.log(rest);
+```
+
+
+
+- 함수 파라미터에서의 rest
+
+함수 파라미터가 몇개가 될 지 모르는 상황에서 rest 파라미터를 사용하면 매우 유용하다.
+
+```javascript
+function sum(...rest) {
+	// rest = [1, 2, 3, 4, 5, 6]
+    return rest.reduce((acc, current) => acc + current, 0);
+}
+
+const result = sum(1, 2, 3, 4, 5, 6);
+console.log(result);
+```
+
+
+
+배열 안에 있는 원소들을 모두 파라미터로 넣고 싶을 때spread와 rest을 활용하면 편하다.
+
+```javascript
+function sum(...rest) {
+    return rest.reduce((acc, current) => acc + current, 0);
+}
+
+const numbers = [1, 2, 3, 4, 5, 6];
+const result = sum(...numbers);
+console.log(result);
+```
+
+
+
+
+
+## Scope에 대한 이해
+
+Scope란 우리가 변수 혹은 함수를 선언하게 될 때 해당 변수 또는 함수가 유효한 범위를 의미한다.
+
+- Global (전역) Scope : 코드 모든 범위에서 사용 가능
+- Function (함수) Scope : 함수 안에서만 사용 가능
+- Block (블록) Scope : if, for, switch 등 특정 블록 내부에서만 사용 가능
+
+
+
+`var`는 블록 내부에서 선언한 값이 블록 밖의 값에도 영향을 미친다.
+
+
+
+### Hoisting
+
+자바스크립트에서 아직 선언되지 않은 함수/변수를 끌어올려서 사용할 수 있는 작동 방식을 말한다.
+
+자바스크립트 엔진이 코드를 해석하는 과정에서 var와 function은 자동으로 순서를 바꿔서 선언을 먼저 실시한다.
+
+하지만 const와 let은 에러가 발생한다. 
+
+Hoisting을 일부러 할 필요는 없으며, 오히려 방지하는 것이 유지보수 측면과, 예측 가능한 결과물을 만들기에 좋다.
+
+
+
+# 자바스크립트에서 비동기 처리 다루기
+
+동기적 ( Synchronous ) : 작업을 순서대로 진행하는 것
+
+비동기적 ( Asynchronous ) : 동시에 여러 가지 작업을 처리하는 것 ( 기다리는 과정에서 다른 함수도 호출 가능 )
+
+
+
+ex)
+
+```javascript
+function wort() {
+    // 비동기 형태로 전환하는 함수 setTimeout
+    setTimeout( () => {
+        const start = Date.now();
+        for (let i = 0; i < 10000; i++) {}
+        const end = Date.now();
+        console.log(end - start + 'ms');
+    }, 0);
+}
+
+console.log('작업 시작!');
+work();
+console.log('다음 작업');
+```
+
+setTimeout(함수, 시간(ms단위) )
+
+함수를 시간이 흐른 후 호출해준다. ( 0ms 이후에 실행한다는 의미지만 실제로는 4ms 이후에 실행된다. )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
