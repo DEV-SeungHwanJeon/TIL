@@ -1552,7 +1552,7 @@ Hoisting을 일부러 할 필요는 없으며, 오히려 방지하는 것이 유
 ex)
 
 ```javascript
-function wort() {
+function work() {
     // 비동기 형태로 전환하는 함수 setTimeout
     setTimeout( () => {
         const start = Date.now();
@@ -1571,17 +1571,211 @@ setTimeout(함수, 시간(ms단위) )
 
 함수를 시간이 흐른 후 호출해준다. ( 0ms 이후에 실행한다는 의미지만 실제로는 4ms 이후에 실행된다. )
 
+해당 함수가 끝난 다음에 어떤 작업을 처리하고 싶다면 콜백 함수를 파라미터로 전달해주면 된다.
+
+콜백 함수란, 함수 타입의 값을 파라미터로 넘겨줘서, 파라미터로 받은 함수를 특정 작업이 끝나고 호출을 해주는 것을 의미한다.
+
+```javascript
+console.log('작업 시작!');
+work( ()=> {
+    console.log('작업이 끝났다')
+});
+console.log('다음 작업');
+```
 
 
 
+비동기적으로 처리하는 작업들
+
+- Ajax Web API 요청 : 만약 서버쪽에서 데이터를 받아와야 할 때는, 요청을 하고 서버에서 응답을 할 때까지 대기해야 되기 때문에 작업을 비동기적으로 처리한다.
+- 파일 읽기: 주로 서버 쪽에서 파일을 읽어야 하는 상황에는 비동기적으로 처리한다.
+- 암호화/복호화 : 암호화/복호화를 할 때에도 바로 처리가 되지 않고, 시간이 어느정도 걸리는 경우가 있기 때문에 비동기적으로 처리한다.
+- 작업 예약: 단순히 어떤 작업을 몇초 후에 스케쥴링 해야 하는 상황에는, setTimeout을 사용하여 비동기적으로 처리한다.
 
 
 
+### Promise
+
+ES6에 도입된 기능으로 비동기 작업을 편하게 처리하게 도와준다.
 
 
 
+기존에 콜백 함수로 비동기 작업을 처리할 때 비동기 작업이 많아질 경우 코드가 난잡해졌다.
+
+```javascript
+function increaseAndPrint(n, callback) {
+  setTimeout(() => {
+    const increased = n + 1;
+    console.log(increased);
+    if (callback) {
+      callback(increased);
+    }
+  }, 1000);
+}
+
+increaseAndPrint(0, n => {
+  increaseAndPrint(n, n => {
+    increaseAndPrint(n, n => {
+      increaseAndPrint(n, n => {
+        increaseAndPrint(n, n => {
+          console.log('끝!');
+        });
+      });
+    });
+  });
+});
+```
 
 
+
+promise로 코드의 깊이가 깊어지는 현상을 방지하자.
+
+```javascript
+const myPromise = new Promse((resolve, reject) => {
+    // 구현..
+})
+```
+
+Promise는 성공할 수도 있고, 실패할 수도 있다. 성공할 때는 resolve를 호출해주면 되고, 실패할 때는 reject를 호출해주면 된다.
+
+
+
+성공하는 상황
+
+```javascript
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(1);
+    }, 1000);
+});
+
+myPromise.then(n => {
+    console.log(n);
+});
+```
+
+resolve를 호출할 때 특정 값을 파라미터로 넣어주면, 이 값을 작업이 끝나고 나서 사용할 수 있다.
+
+작업이 끝나고 나서 또 다른 작업을 해야할 때에는 Promise 뒤에 `.then(...)` 을 붙여서 사용하면 된다.
+
+
+
+실패하는 상황
+
+```javascript
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        reject(new Error());
+    }, 1000);
+});
+
+myPromise
+    .then(n => {
+    console.log(n);
+	});
+	.catch(error => {
+        console.log(error);
+    });
+```
+
+실패하는 상황에서는 reject를 사용하고, `.catch`를 통하여 실패 시 수행할 작업을 설정할 수 있다.
+
+
+
+최종 Promise를 만드는 함수의 모습
+
+```javascript
+function increaseAndPrint(n) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const value = n + 1;
+            if (value === 5) {
+                const error = new Error();
+                error.name = 'ValueIsFiveError';
+                reject(error);
+                return;
+            }
+            console.log(value);
+            resolve(value);
+        }, 1000);
+    });
+}
+
+increaseAndPrint(0).then((n) => {
+    console.log('result: ', n);
+})
+```
+
+
+
+Promise의 속성 중에는, 만약 then 내부에 넣은 함수에서 또 Promise를 리턴하게 된다면, 연달아서 사용할 수 있다.
+
+```javascript
+function increaseAndPrint(n) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const value = n + 1;
+      if (value === 5) {
+        const error = new Error();
+        error.name = 'ValueIsFiveError';
+        reject(error);
+        return;
+      }
+      console.log(value);
+      resolve(value);
+    }, 1000);
+  });
+}
+
+/*
+increaseAndPrint(0)
+  .then(n => {
+    return increaseAndPrint(n);
+  })
+  .then(n => {
+    return increaseAndPrint(n);
+  })
+  .then(n => {
+    return increaseAndPrint(n);
+  })
+  .then(n => {
+    return increaseAndPrint(n);
+  })
+  .then(n => {
+    return increaseAndPrint(n);
+  })
+  .catch(e => {
+    console.error(e);
+  });
+*/
+increaseAndPrint(0)
+  .then(increaseAndPrint)
+  .then(increaseAndPrint)
+  .then(increaseAndPrint)
+  .then(increaseAndPrint)
+  .then(increaseAndPrint)
+  .catch(e => {
+    console.error(e);
+});
+```
+
+
+
+비동기 작업의 개수가 많아져도 코드의 깊이가 깊어지지 않게 된다.
+
+
+
+Promise의 불편한 점
+
+- 몇번째에서 에러가 발생했는지 알아내기 어렵다
+- 특정 조건에 따라 분기를 나누는 작업이 어렵다
+- 특정 값을 공유해가면서 작업을 처리하기 어렵다.
+
+
+
+### async/await
+
+ES8에 해당하는 문법으로서, Promise를 더욱 쉽게 사용하게 해준다.
 
 
 
