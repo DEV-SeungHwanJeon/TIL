@@ -1773,11 +1773,47 @@ Promise의 불편한 점
 
 
 
+# 이 부분부터는 나중에 필요성을 느낄 때 다시 깊숙히 공부하려 합니다.
+
 ### async/await
 
 ES8에 해당하는 문법으로서, Promise를 더욱 쉽게 사용하게 해준다.
 
+async/await 문법을 사용할 때에는, 함수를 선언할 때 함수의 앞부분에 `async` 키워드를 붙여준다. 그리고 Promise의 앞부분에 `await`을 넣어주면 해당 promise가 끝날 때까지 기다렸다가 다음 작업을 수행할 수 있다.
 
+```javascript
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function process() {
+    console.log('안녕하세요!');
+    await sleep(1000); // 1초쉬고
+    console.log('반갑습니다');
+}
+
+process();
+```
+
+위 코드에서는 `sleep`이라는 함수를 만들어서 파라미터로 넣어준 시간 만큼 기다리는 Promise를 만들고, 이를 `process` 함수에서 사용해주었다.
+
+함수에서 `async`를 사용하면, 해당 함수는 결과값으로 Promise를 반환하게 된다. 따라서 다음과 같이 작성이 가능하다.
+
+```javascript
+function sleep(ms) {
+    return new Promise(resolve=> setTimeout(resolve, ms));
+}
+
+async function process() {
+    console.log('안녕하세요!');
+    await sleep(1000);
+    console.log('반갑습니다');
+}
+
+process().then(() => {
+    console.log('작업이 끝났어요!');
+});
+```
 
 
 
