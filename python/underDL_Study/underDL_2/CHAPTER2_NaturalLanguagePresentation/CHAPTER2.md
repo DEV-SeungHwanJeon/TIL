@@ -295,7 +295,17 @@ def most_similar(query, word_to_id, id_to_word, word_matrix, top=5):
 - 점별 상호정보량(PMI)
   - 사용 목적은 동시 발생 빈도 관련성 문제를 해결하는 것이다.
   - PMI는 확률 변수 x와 y에 대해 다음 식으로 정의된다.
-    -  ![image-20210304003231121](CHAPTER2.assets/image-20210304003231121.png)
+    -  ![image-20210306235346699](CHAPTER2.assets/image-20210306235346699.png)
+    - N: 말뭉치에 포함된 단어 수
     - P(x)는 x가 일어날 확률, P(y)는 y가 일어날 확률, P(x, y)는 x와 y가 동시에 일어날 확률
+    - P(x)는 단어 x가 말뭉치에 등장할 확률을 말한다.
   - PMI 값이 높을수록 관련성이 높다는 의미이다.
+
+
+
+
+
+
+
+
 
