@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c4ed446-2457-4f68-843e-dff98ea28f55" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../app/my_project/expoFirst" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/my_project/expoFirst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/underDL_2/CHAPTER2_NaturalLanguagePresentation/CHAPTER2.md" beforeDir="false" afterPath="$PROJECT_DIR$/underDL_2/CHAPTER2_NaturalLanguagePresentation/CHAPTER2.md" afterDir="false" />
-    </list>
+    <list default="true" id="4c4ed446-2457-4f68-843e-dff98ea28f55" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,11 +12,12 @@
     <session id="2078209150">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.3" value="3" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -49,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/underDL_2/deep-learning-from-scratch-2-master/ch02/count_method_big.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="47" lean-forward="true" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+            <state relative-caret-position="734">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -138,7 +136,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../exercise/algorithm" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -269,7 +267,7 @@
   <component name="ToolWindowManager">
     <frame x="915" y="0" width="1012" height="1047" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20020534" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20020534" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -312,10 +310,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/underDL_2/deep-learning-from-scratch-2-master/common/util.py">
+    <entry file="file://$PROJECT_DIR$/underDL_2/deep-learning-from-scratch-2-master/ch02/count_method_big.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2100">
-          <caret line="140" column="58" selection-start-line="140" selection-start-column="58" selection-end-line="140" selection-end-column="58" />
+        <state relative-caret-position="734">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
         </state>
       </provider>
     </entry>
@@ -326,10 +324,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/underDL_2/deep-learning-from-scratch-2-master/ch02/count_method_big.py">
+    <entry file="file://$PROJECT_DIR$/underDL_2/deep-learning-from-scratch-2-master/common/util.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="47" lean-forward="true" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+        <state relative-caret-position="2100">
+          <caret line="140" column="58" selection-start-line="140" selection-start-column="58" selection-end-line="140" selection-end-column="58" />
         </state>
       </provider>
     </entry>
