@@ -146,3 +146,52 @@ django template system
 
   
 
+
+
+### HTML form element
+
+웹에서 사용자 정보를 입력하는 여러 방식(text, button, checkbox, file, hidden, image, password, radio, reset, submit)을 제공하고, 사용자로부터 할당된 데이터를 서버로 전송하는 역할을 담당
+
+- 속성
+  - action : 입력 데이터가 전송될 URL을 지정
+  - method : 입력 데이터 전달 방식 지정
+    - GET : 
+      - 서버로부터 정보를 저회하는데 사용
+      - 데이터를 가져올 때만 사용해야 함
+      - 데이터를 서버로 전송할 때 body가 아닌 Query String Paramenters를 통해 전송
+      - 서버에 요청을 하면 HTML 문서 파일 한 장을 받는데 이때 사용하는 요청의 방식이 GET
+    - POST : 수정, 삭제를 진행
+
+
+
+### HTML input element
+
+사용자로부터 데이터를 입력 받기 위해 사용
+
+type 속성에 따라 동작 방식이 달라짐
+
+- 속성
+  - name
+  - 중복 가능, 양식을 제출했을 때 name이라는 이름에 설정된 값을 넘겨서 값을 가져올 수 있음
+  - GET/POST 방식으로 서버에 전달하는 파라미터(name은 key, value는 value)로 ?key=value&key=value 형태로 전달
+
+
+
+
+
+### App URL mapping
+
+어플리케이션의 view 함수가 많아지면서 사용하는 path() 또한 많아지고, app 또한 더 작성되기 때문에 프로젝트의 urls.py에서 모두 관리하는 것은 코드 유지보수에 좋지 않음
+
+그래서 각 app에 urls.py를 작성 ㅡ> Naming URL patterns
+
+
+
+### Naming URL patterns
+
+이제는 링크에 url을 직접 작성하는 것이 아니라 path() 함수의 name 인자를 정의해서 사용
+
+django template tag 중 하나인 url 태그를 사용해서 path() 함수에 작성한 name을 사용할 수 있음
+
+url 설정에 정의된 특정한 경로들의 의존성을 제거할 수 있음
+
