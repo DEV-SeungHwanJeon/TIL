@@ -177,8 +177,6 @@ type 속성에 따라 동작 방식이 달라짐
 
 
 
-
-
 ### App URL mapping
 
 어플리케이션의 view 함수가 많아지면서 사용하는 path() 또한 많아지고, app 또한 더 작성되기 때문에 프로젝트의 urls.py에서 모두 관리하는 것은 코드 유지보수에 좋지 않음
@@ -194,4 +192,39 @@ type 속성에 따라 동작 방식이 달라짐
 django template tag 중 하나인 url 태그를 사용해서 path() 함수에 작성한 name을 사용할 수 있음
 
 url 설정에 정의된 특정한 경로들의 의존성을 제거할 수 있음
+
+- `path('index/', views.index, name='index')`
+- `<a href="{% url 'index' %}">메인페이지</a>`
+
+
+
+### namespace
+
+namespace(이름공간)는 객체를 구분할 수 있는 범위를 나타내는 말로 일반적으로 하나의 이름공간에서는 하나의 이름이 단 하나의 객체만을 가리키게 된다.
+
+django에서는
+
+- 서로 다른 app의 같은 이름을 가진 url name은 이름공간을 설정해서 구분
+- templates, static 등 django는 정해진 경로를 하나로 모아서 보기 때문에 중간에 폴더를 임의로 만들어줌으로써 이름공간을 설정
+
+
+
+
+
+URL namespace
+
+- url에 namespace를 설정함으로써 어떤 app에 작성된 url name인지 정확히 사용할 수 있음
+  - ex) 
+    - `app_name = 'articles'`
+    - `path('index/', views.index, name='index')`
+    - `<a href="{% url 'articles:index' %}">메인 페이지</a>`
+
+
+
+Template namespace
+
+- django는 templates 내의 파일들을 찾을 때 INSTALLED_APPS에 작성한 순서로 모든 app/templates 를 찾기 때문에 templates의 폴더 구조를 임의로 변경하여 이름공간을 생성 해야 한다.
+  - ex) app/templates/app/blabla.html
+
+
 

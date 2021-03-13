@@ -9,26 +9,21 @@
 
 
 
-### 데이터베이스: 체계화된 데이터의 모임
+- 데이터베이스: 
+  - 체계화된 데이터의 모임
+  - 스키마(Schema):
+    - 데이터베이스의 구조와 제약조건(자료의 구조, 표현방법, 관계)에 관련한 전반적인 명세를 기술한 것 (structure)
+  - 테이블(Table)
+    - 필드 / 컬럼 / 속성
+    - 레코드 / 행 / 튜플
 
-쿼리: 데이터를 조회하기 위한 명령어, 조건에 맞는 데이터를 추출하거나 조작하는 명령어
+- 쿼리: 
+  - 데이터를 조회하기 위한 명령어
+  - 조건에 맞는 데이터를 추출하거나 조작하는 명령어
 
-
-
-### 데이터베이스의 기본 구조
-
-- 스키마(Schema): 데이터베이스의 구조와 제약조건(자료의 구조, 표현방법, 관계)에 관련한 전반적인 명세를 기술한 것 (structure)
-- 테이블(Table)
-  - 필드 / 컬럼 / 속성
-  - 레코드 / 행 / 튜플
-
-
-
-
-
-### 키
-
-- 기본키(Primary Key): 각 행(레코드)의 고유값으로 기본키로 불린다. 반드시 설정하여야하며, 데이터베이스 관리 및 관계 설정 시 주요하게 활용된다.
+- 기본키(Primary Key):
+  - 각 행(레코드)의 고유값으로 기본키로 불린다.
+  - 반드시 설정하여야하며, 데이터베이스 관리 및 관계 설정 시 주요하게 활용된다.
 
 
 
@@ -42,6 +37,8 @@
 
 DB -(SQL statement)- ORM -(Python Object)- models.py
 
+
+
 ### 장점
 
 - SQL을 잘 알지 못해도 DB 조작이 가능
@@ -53,39 +50,46 @@ DB -(SQL statement)- ORM -(Python Object)- models.py
 
 
 
-★ 현대 웹 프레임워크의 요점은 웹 개발의 속도를 높이는 것 (생산성)
-
-
-
 
 
 ### Migrations
 
-models.py 수정 후
+django가 model에 생긴 변화를 반영하는 방법
 
-python manage.py makemigrations
+migration 실행 및 DB 스키마를 다루기 위한 몇가지 명령어
 
-- 만약 수정본을 다시 하는 경우에는 Select an option이 뜬다
+- makemigrations
+  - model을 변경한 것에 기반한 새로운 migration을 만들 때 사용 ( 설계도 )
+- migrate
+  - migration을 DB에 반영하기 위해 사용
+  - 설계도를 실제 DB에 반영하는 과정
+  - 모델에서의 변경 사항들과 DB의 스키마가 동기화를 이룸
+- sqlmigrate
+  - migration에 대한 SQL 구문을 보기 위해 사용
+  - migration이 SQL 문으로 어떻게 해석되어서 동작할지 미리 확인할 수 있다.
+  - ex) python manage.py sqlmigrate articles 0001
+- showmigrations
+  - 프로젝트 전체의 migration 상태를 확인하기 위해 사용
+  - migrate 됐는지 안됐는지 여부 확인 가능
 
-  1. 여기서 수정
-     - 그냥 엔터치면 timezone.now가 들어간다
-
-  2. 나가서 models.py를 수정
-     - 공식문서의 datefield 에 들어가서 해야된다. 하지만 시간이다보니까 직접 구현하기 어렵다.
 
 
+models.py 수정 후 진행 순서:
 
-python manage.py migrate
+- python manage.py makemigrations
+  - 만약 수정본을 다시 하는 경우에는 Select an option이 뜬다.
+
+    1. 여기서 수정
+
+    - ​	그냥 엔터치면 timezone.now가 들어간다
+
+    2. 나가서 models.py를 수정
+
+    - ​	공식문서의 datefield 에 들어가서 해야된다. 하지만 시간이다보니까 직접 구현하기 어렵다.
+
+- python manage.py migrate
 
 
-
-
-
-sqlmigrate : 
-
-- 마이그레이션에 대한 SQL 구문을 보기 위해 사용
-
-- ex) python manage.py sqlmigrate articles 0001
 
 
 
