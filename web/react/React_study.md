@@ -37,7 +37,7 @@ Create-React-App : https://create-react-app.dev/docs/getting-started
 
 
 
-## JPX (react 문법)
+## JSX (react 문법)
 
 1. 태그에 class를 주고 싶으면
 
