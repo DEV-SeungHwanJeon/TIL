@@ -48,9 +48,39 @@ W[2] # [6, 7, 8]
 W[5] # [15, 16, 17]
 ```
 
+가중치 W로부터 여러 행을 추출하는 일도 간단하다. 원하는 행번호들을 배열에 명시하면 된다.
+
+```python
+idx = np.array([1, 0, 3, 0]) # 인덱스 4개 추출
+W[idx]
+# array([[3, 4, 5],[0, 1, 2], [9, 10, 11], [0, 1, 2]])
+```
+
+인수에 배열을 사용하면 여러 행을 한꺼번에 출력 가능하다.
 
 
 
+Embedding 계층의 forward() 메서드 구현
+
+```python
+class Embedding:
+    def __init__(self, W):
+        self.params = [W]
+        self.grads = [np.zeros_like(W)]
+        self.idex = None
+        
+    def forward(self, idx):
+        W, = self.params
+        self.idx = idx
+        out = W[idx]
+        return out
+```
+
+인스턴스 변수 params와 grads를 사용한다. 또한 인스턴스 변수 idx에는 추출하는 행의 인덱스(단어 ID)를 배열로 저장한다.
+
+
+
+Embedding 계층의 순전파는 가중치 W의 특정 행을 추출할 뿐이다. 따라서 역전파(backward)에서는 앞 층(출력 측 층)으로부터 전해진 기울기를 다음 층(입력 측 층)으로 그대로 흘려주면 된다. 다만, 앞 층으로부터 전해진 기울기를 가중치 기울기 dW의 특정 행(idx번째 행)에 설정한다.
 
 
 
