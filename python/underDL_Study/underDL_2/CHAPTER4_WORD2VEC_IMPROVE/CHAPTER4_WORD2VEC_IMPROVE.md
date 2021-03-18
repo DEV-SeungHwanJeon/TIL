@@ -80,21 +80,51 @@ class Embedding:
 
 
 
-Embedding 계층의 순전파는 가중치 W의 특정 행을 추출할 뿐이다. 따라서 역전파(backward)에서는 앞 층(출력 측 층)으로부터 전해진 기울기를 다음 층(입력 측 층)으로 그대로 흘려주면 된다. 다만, 앞 층으로부터 전해진 기울기를 가중치 기울기 dW의 특정 행(idx번째 행)에 설정한다.
+Embedding 계층의 순전파는 가중치 W의 특정 행을 추출할 뿐이다. 따라서 역전파(backward)에서는 앞 층(출력 측 층)으로부터 전해진 기울기를 다음 층(입력 측 층)으로 그대로 흘려주면 된다. 다만, 앞 층으로부터 전해진 기울기를 가중치 기울기 dW의 특정 행(idx번째 행)에 설정한다. ![image-20210318234616107](CHAPTER4_WORD2VEC_IMPROVE.assets/image-20210318234616107.png)
+
+```python
+def backward(self, dout):
+    dW, self.grads
+    dW[...] = 0
+    dW[self.idx] = dout
+    return None
+```
+
+가중치 기울기 dW를 꺼낸 다음, dW[...] = 0 코드에서 dW의 원소를 0으로 덮어쓴다. ( dW의 형상을 유지한 채, 그 원소들을 0으로 덮어씀 ). 이후 앞 층에서 전해진 기울기 dout을 idx번째 행에 할당한다.
+
+이 구현에서는 idx의 원소가 중복되면 문제가 생긴다. 먼저 쓰여진 값을 덮어쓰게 되는 경우가 생기므로 **'할당'이 아닌 '더하기'를 해야한다.** 즉 dh의 각 행의 값을 dW의 해당 행에 더해준다.
+
+```python
+def backward(self, dout):
+    dW, = self.grads
+    dW[...] = 0
+    for i, word_id in enumerate(self.idx):
+        dW[word_id] += dout[i]
+    # np.add.at(dW, self.idx, dout) 도 가능하다.
+    # np.add.at(A, idx, B)는 B를 A의 idx번째 행에 더해준다.
+    return None
+```
+
+for문을 사용해 해당 인덱스에 기울기를 더했다. 이것으로 idx에 중복 인덱스가 있더라도 올바르게 처리된다. 
+
+word2vec (CBOW 모델)의 입력 측 MatMul 계층을 Embedding 계층으로 전환하였다. 메모리 사용량을 줄이고 쓸데없는 계산을 생략했다.
 
 
 
+## 4.2 word2vec 개선_2
+
+은닉층 이후의 처리 (행렬 곱과 Softmax 계층의 계산)를 네거티브 샘플링(부정적 샘플링) 기법을 사용해서 개선해보자. Softmax 대신 네거티브 샘플링을 이용하면 어휘가 아무리 많아져도 계산량을 낮은 수준에서 일정하게 억제할 수 있다.
 
 
 
+### 4.2.1 은닉층 이후 계산의 문제점
 
+어휘가 100만 개, 은닉층 뉴런이 100개일 때의 word2vec (CBOW모델)을 예로 생각해보자. ![image-20210318235535505](CHAPTER4_WORD2VEC_IMPROVE.assets/image-20210318235535505.png)
 
+ㅡ you 와 goodbye 사이의 say를 예측해보자. ㅡ
 
+입력층과 출력층에 뉴런이 각 100만 개씩 존재한다.
 
-
-
-
-
-
-
-
+- 은닉층 이후에 계산이 오래걸리는 곳
+  - 은닉층의 뉴런과 가중치 행렬(W_out)의 곱
+  - Softmax 계층의 계산
