@@ -377,3 +377,35 @@ export default Cafe;
 
 
 
+# 6. 플랫폼 API 이용하기
+
+## 6.2 사용자의 사진과 카메라 접근하기
+
+네이티브 코드 작성이 필요한 프로젝트
+
+- 이번 절의 예제는 react-native-init으로 생성했거나 create-react-native-app으로 생성 후 eject한 경우에만 동작한다 (부록 C 참고)
+
+
+
+배경 이미지를 사용자의 사진으로 변경하자.
+
+### 6.2.1 카메라롤 모듈 다루기
+
+리액트 네이티브는 스마트폰에서 카메라로 찍은 사진이 저장되는 카메라롤(CameraRoll)인터페이스를 제공한다.
+
+`import { CameraRoll } from "react-native"`
+
+이후 모듈을 사용하여 사용자의 사진 정보를 가져오자
+
+```react
+CameraRoll.getPhotos(
+	{first: 1},
+	(data) => {
+        console.log(data);
+    },
+	(error) => {
+        console.warn(error);
+    })
+```
+
+적절한 조회 조건으로 getPhotos를 호출하면 카메라롤 사진에 대한 정보를 얻을 수 있다.
