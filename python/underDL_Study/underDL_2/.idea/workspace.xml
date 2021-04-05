@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5bd9f80e-4fca-4ce5-9dcf-c3f7b0fa0938" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHAPTER5_RNN/CHAPTER5_RNN.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHAPTER5_RNN/CHAPTER5_RNN.md" afterDir="false" />
-    </list>
+    <list default="true" id="5bd9f80e-4fca-4ce5-9dcf-c3f7b0fa0938" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,11 +12,11 @@
     <session id="-629476145">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.3" value="2" />
-          <entry key="project.open.time.4" value="2" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.open.time.4" value="3" />
+          <entry key="project.opened" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -106,7 +103,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/common/time_layers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
+            <state relative-caret-position="510">
               <caret line="36" selection-start-line="36" selection-end-line="36" />
             </state>
           </provider>
@@ -116,7 +113,7 @@
         <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/ch05/simple_rnnlm.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="735">
-              <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+              <caret line="49" selection-start-line="49" selection-end-line="49" />
             </state>
           </provider>
         </entry>
@@ -124,8 +121,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/ch05/train_custom_loop.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7">
-              <caret line="24" column="22" lean-forward="true" selection-end-line="75" />
+            <state relative-caret-position="360">
+              <caret line="24" column="22" selection-end-line="75" />
             </state>
           </provider>
         </entry>
@@ -133,8 +130,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/ch05/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="32" />
+            <state relative-caret-position="480">
+              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -201,7 +198,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../exercise/algorithm" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -388,7 +385,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/common/time_layers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
+        <state relative-caret-position="510">
           <caret line="36" selection-start-line="36" selection-end-line="36" />
         </state>
       </provider>
@@ -396,21 +393,21 @@
     <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/ch05/simple_rnnlm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="735">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/ch05/train_custom_loop.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7">
-          <caret line="24" column="22" lean-forward="true" selection-end-line="75" />
+        <state relative-caret-position="360">
+          <caret line="24" column="22" selection-end-line="75" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/deep-learning-from-scratch-2-master/ch05/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="32" />
+        <state relative-caret-position="480">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
         </state>
       </provider>
     </entry>
