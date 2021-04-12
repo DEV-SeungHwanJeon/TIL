@@ -19,7 +19,7 @@
 언어 모델에게 문장을 생성시키는 순서
 
 - 학습된 언어 모델에 단어를 입력으로 준다.
-  -  <img src="CHAPTER7_RNN-sentence.assets/image-20210410125146810.png" alt="image-20210410125146810" style="zoom:50%;" />
+  -   <img src="CHAPTER7_RNN-sentence.assets/image-20210410125146810.png" alt="image-20210410125146810" style="zoom:50%;" />
   - 언어 모델은 지금까지 주어진 단어들에서 다음에 출현하는 단어의 확률분포를 출력한다.
 - 다음 단어를 새로 생성하려면 어떻게 해야 할까?
   - 확률이 가장 높은 단어를 선택
@@ -112,6 +112,8 @@ print(txt)
 ### 7.1.3 더 좋은 문장으로
 
 앞 장에서 구현한 BetterRnnlm 클래스를 상속한 후 문장 생성 기능을 추가해보자.
+
+ ![image-20210411131442212](CHAPTER7_RNN-sentence.assets/image-20210411131442212.png)
 
 ```python
 # coding: utf-8
