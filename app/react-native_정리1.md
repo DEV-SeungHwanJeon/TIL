@@ -598,3 +598,178 @@ StyleSheet 라이브러리를 활용하여 스타일 객체를 작성하는 것�
       }
       ```
 
+11. 배경 이미지 추가하기
+
+    - 이미지 파일은 다른 코드 파일들과 거의 동일하게 관리된다.
+
+    - 이미지도 require를 호출하여 불러온다. `<Image source={require('.flowers.png')}/>`
+
+    - 리액트 네이티브 패키저는 플랫폼에 따라 그에 맞는 이미지를 불러온다.
+
+    - `@2x`, `@3x` 접미사를 붙여 화면 밀도에 따른 파일을 생성할 수 있다.
+
+    - 배경 이미지를 View에 추가하기
+
+      - Image 컴포넌트의 props의 source에 require 함수를 이용하여 이미지를 지정한다.
+
+        - ```react
+          <Image source={require('./flowers.png')}
+              resizeMode='cover'
+              style={styles.backdrop}>
+          </Image>
+          ```
+
+      - 렌더링 방식 결정은 flexDirection으로 한다
+
+        - ```react
+          backdrop: {
+              flex: 1,
+              flexDirection: 'column'
+          }
+          ```
+
+    - Image에 하위 컴포넌트를 추가해보자 . `<WeatherProject>`컴포넌트가 다음과 같이 렌더링하도록 수정한다.
+
+      - row, overlay, zipContainer, zipCode라는 스타일을 추가적으로 사용한다.
+
+      - ```react
+        <View style={styles.container}>
+        	<Image
+                source={require("./flowers.png")}
+                resizeMode="cover"
+                style={styles.backdrop}>
+            	<View style={styles.overlay}>
+                    <View style={styles.row}>
+                        <Text style={styles.mainText}>
+                            Current weather for
+                        </Text>
+                        <View style={styles.zipContainer}>
+                            <TextInput
+                                style={[styles.zipCode, styles.mainText]}
+                                onSubmitEditing={event => this._handleTextChange(event)}
+                            />
+                        </View>
+                    </View>
+                    {content}
+                </View>
+            </Image>
+        </View>
+        ```
+
+12. 최종 완성본
+
+    - `<WeatherProject>` 컴포넌트의 render 함수를 재구성하고 스타일을 수정했다.
+
+    - ```react
+      import React, { Component } from "react";
+      
+      import { StyleSheet, Text, View, TextInput, Image } from "react-native";
+      import Forecast from "./Forecast";
+      import OpenWeatherMap from "./open_weather_map";
+      
+      class WeatherProject extends Component {
+          constructor(props) {
+              super(props);
+              this.state = { zip: "", forecast: null };
+          }
+          
+          _handleTextChange = event => {
+              let zip = event.nativeEvent.text;
+              OpenWeatherMap.fetchForecast(zip).then(forecast => {
+                  this.setState({forecast:forecast});
+              });
+          };
+      
+      	render() {
+              let content = null;
+              if (this.state.forecast !== null){
+                  content = (
+                  	<Forecast
+                          main={this.state.forecast.main}
+                          description={this.state.forecast.description}
+                          temp={this.state.forecast.temp}
+                      />
+                  );
+              }
+              
+              return (
+                  <View style={styles.container}>
+                      <Image
+                          source={require("./flowers.png")}
+                          resizeMode="cover"
+                          style={styles.backdrop}>
+                          <View style={styles.overlay}>
+                              <View style={styles.row}>
+                                  <Text style={styles.mainText}>
+                                      Current weather for
+                                  </Text>
+                                  <View style={styles.zipContainer}>
+                                      <TextInput
+                                          style={[styles.zipCode, styles.mainText]}
+                                          onSubmitEditing={this._handleTextChange}
+                                          underlineColorAndroid="transparent"
+                                      />
+                                  </View>
+                              </View>
+                              {content}
+                          </View>
+                      </Image>
+                  </View>
+              );
+          }
+      }
+      
+      const baseFontSize = 16;
+      
+      const styles = StyleSheet.create({
+          container: {
+              flex: 1,
+              alignItems: "center",
+      		paddingTop:30
+          },
+          backdrop: {flex:1, flexDirection: "column"},
+          overlay: {
+              paddingTop:5,
+              backgroundColor: "#000000",
+              opacity: 0.5,
+              flexDirection: "column",
+              alignItems: "center"
+          },
+          row: {
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              alignItems: "flex-start",
+              padding: 30
+          },
+          zipContainer: {
+              height: baseFontSize + 10,
+              borderBottomColor: "#DDDDDD",
+              borderBottomWidth: 1,
+              marginLeft: 5,
+              marginTop: 3
+          },
+          zipCode: {flex: 1, flexBasis: 1, width: 50, height: baseFontSize },
+          mainText: { fontSize: baseFontSize, color: "#FFFFFF" }
+      });
+      
+      export default WeatherProject;
+      ```
+
+
+
+
+
+## 모바일 컴포넌트
+
+View, Image, 그리고 Text 컴포넌트의 세부사항을 살펴보고, 터치 및 제스처의 구성과 터치 이벤트 핸들링, 여러 뷰를 표준 모바일 인터페이스 패턴에 맞게 결합해주는 탭바, 네비게이션, 리스트와 같은 고수준 컴포넌트에 대해 살펴보겠다.
+
+
+
+### HTML 엘리먼트와 네이티브 컴포넌트의 유사성
+
+리액트 네이티브에서는 HTML 엘리먼트를 사용하지 않고 유사하며 다양한 컴포넌트를 사용한다.
+
+
+
+
+
