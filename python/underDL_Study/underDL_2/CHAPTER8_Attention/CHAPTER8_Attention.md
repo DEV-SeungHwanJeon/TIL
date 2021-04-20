@@ -1,3 +1,5 @@
+
+
 # CHAPTER8_어텐션
 
 
@@ -114,5 +116,113 @@ ar = a.reshape(5,1).repeat(4, axis=1) 코드 설명:
 
 ![image-20210416230726169](CHAPTER8_Attention.assets/image-20210416230726169.png)
 
-이 코드는 ar = hs * a.reshape(5,1) 와 같다. (넘파이의 브로드캐스트 )
+이 코드는 ar = hs * a.reshape(5,1) 와 같다. ( = 넘파이의 브로드캐스트 )
+
+![image-20210420233652322](CHAPTER8_Attention.assets/image-20210420233652322.png)
+
+구현 효율은 넘파이의 브로드캐스트가 더 좋다.
+
+계산 그래프로는 Repeat 노드에 해당한다.
+
+따라서 역전파 때는 Repeat 노드의 역전파를 수행해야 한다.
+
+
+
+원소별 곱 계산 이후에는 `c = np.sum(hs * ar, axis=0)` 코드로 합을 구한다. ( (X, Y, Z) 형상을 가진 x의 np.sum(x, axis=1)의 결과는 (X, Z) 이다. 1번째 축(Y)이 사라진다. )
+
+
+
+다음으로는 미니배치 처리용 가중합을 구현한다.
+
+```python
+N, T, H = 10, 5, 4
+hs = np.random.randn(N, T, H) # 일단 무작위 생성
+a = np.random.randn(N, T) # 일단 무작위 생성
+ar = a.reshape(N, T, 1).repeat(H, axis=2)
+# ar = a.reshape(N, T, 1) # 브로드캐스트를 사용하는 경우
+
+t = hs * ar
+print(t.shape)
+# (10, 5, 4)
+
+c = np.sum(t, axis=1)
+print(c.shape)
+# (10, 4)
+```
+
+미니배치 처리는 이전 구현과 거의 같다.
+
+
+
+가중합 계산을 '계산 그래프'로 그려보자.
+
+ ![image-20210420234642208](CHAPTER8_Attention.assets/image-20210420234642208.png)
+
+`Repeat` 노드를 사용해 a를 복제하고, `x` 노드로 원소별 곱을 계산한 다음, `sum` 노드로 합을 구한다. 
+
+위의 "맥락 벡터를 구하는 Weight Sum 계층" 의 구현 :
+
+```python
+class WeightSum:
+    def __init__(self):
+        self.params, self.grads = [], []
+        self.cache = None
+        
+    def forward(self, hs, a):
+        N, T, H = hs.shape
+        
+        ar = a.reshape(N, T, 1).repeat(H, axis=2)
+        t = hs * ar
+        c = np.sum(t, axis=1)
+        
+        self.cache = (hs, ar)
+        return c
+    
+    def backward(self, dc):
+        hs, ar = self.cache
+        N, T, H = hs.shape
+        
+        dt = dc.reshape(N, 1, H).repeat(T, axis=1) # sum의 역전파
+        dar = dt * hs
+        dhs = dt * ar
+        da = np.sum(dar, axis=2) # repeat의 역전파
+        
+        return dhs, da
+```
+
+
+
+### 8.1.4 Decoder 개선_2
+
+각 단어의 중요도( 가중치 a )의 가중합을 이용해 '맥락 벡터'를 얻을 수 있다는 것을 알았다. 이 가중치 a는 어떻게 구해야 할까? ㅡ> 데이터로부터 자동으로 학습할 수 있도록 해보자.
+
+
+
+우선 Decoder의 첫 번째 LSTM 계층이 은닉 상태 벡터를 출력할 때까지의 처리를 알아봐야 한다.![image-20210420235407376](CHAPTER8_Attention.assets/image-20210420235407376.png)
+
+Decoder의 LSTM 계층의 은닉 상태 벡터를 h가 hs의 각 단어 벡터와 얼마나 비슷한가를 수치로 나타내는 것이 목표이다. 여러 가지 방법 중 가장 단순한 방법인 "벡터의 내적"을 이용해보자. 내적의 직관적인 의미는 "두 벡터가 얼마나 같은 방향을 향하고 있는가"이다. 따라서 두 벡터의 '유사도'를 표현하는 척도로 내적을 이용할 수 있다.
+
+
+
+결과로 나온 "h와 hs의 각 단어 벡터와의 유사도"(s)는 정규화하기 전의 값이며, '점수'라고도 한다.
+
+![image-20210420235736087](CHAPTER8_Attention.assets/image-20210420235736087.png)
+
+
+
+이후 이 s에 소프트맥스 함수를 적용하여 정규화를 한다.
+
+![image-20210420235747776](CHAPTER8_Attention.assets/image-20210420235747776.png)
+
+
+
+
+
+각 단어의 가중치 a를 구하는 방법
+
+
+
+
+
+
 
