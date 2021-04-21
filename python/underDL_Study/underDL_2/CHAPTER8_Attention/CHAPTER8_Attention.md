@@ -216,13 +216,91 @@ Decoder의 LSTM 계층의 은닉 상태 벡터를 h가 hs의 각 단어 벡터�
 
 
 
+지금까지의 과정을 구현( 미니배치 처리를 수행 ) :
+
+```python
+from common.layers import Softmax
+import numpy as np
+
+N, T, H = 10, 5, 4
+hs = np.random.randn(N, T, H)
+h = np.random.randn(N, H)
+hr = h.reshape(N, 1, H).repeat(T, axis=1)
+# hr = h.reshape(N, 1, H) # 브로드캐스트를 사용하는 경우
+
+t = hs * hr
+print(t.shape)
+# (10, 5, 4)
+
+s = np.sum(t, axis=2)
+print(s.shape)
+# (10, 5)
+
+softmax = Softmax()
+a = softmax.forward(s)
+print(a.shape)
+# (10, 5)
+```
 
 
-각 단어의 가중치 a를 구하는 방법
+
+각 단어의 가중치 a를 구하는 과정의 계산 그래프
+
+ ![image-20210421000100100](CHAPTER8_Attention.assets/image-20210421000100100.png)
+
+계산 그래프는 `Repeat`노드, 원소별 곱을 뜻하는 `x` 노드, `Sum` 노드, `Softmax`계층으로 구성된다. ( AttentionWeight 클래스로 구현 )
+
+```python
+# ch08/attention_layer.py
+```
 
 
 
+### 8.1.5 Decoder 개선_3
+
+개선안 두 가지 (Attention Weight 계층, Weight Sum 계층)을 하나로 결합해보자.
 
 
 
+맥락 벡터를 구하는 계산 그래프의 전체 모습:
+
+![image-20210421224602856](CHAPTER8_Attention.assets/image-20210421224602856.png)
+
+Attention Weight 계층은 Encoder가 출력하는 각 단어의 벡터 hs에 주목하여 해당 단어의 가중치 a를 구한다. 이어서 Weight Sum 계층이 a와 hs의 가중합을 구하고, 그 결과를 맥락 벡터 c로 출력한다. 이 일련의 계싼을 수행하는 계층을 Attention 계층이라고 부른다.
+
+결국 핵심은 Encoder가 건네주는 정보 hs에서 중요한 원소에 주목하여, 그것을 바탕으로 맥락 벡터를 구해 위쪽 계층으로 전파한다는 것이다.
+
+```python
+# ch08/attention_layer.py
+```
+
+각 단어의 가중치를 나중에 참조할 수 있도록 attention_weight 라는 인스턴스 변수에 저장한다. 이제 이 Attention 계층을 LSTM 계층과 Affine 계층 사이에 삽입하면 된다.
+
+![image-20210421224844141](CHAPTER8_Attention.assets/image-20210421224844141.png)
+
+각 시각의 Attention 계층에는 Encoder의 출력인 hs가 입력된다. 또 여기에서는 LSTM 계층의 은닉 상태 벡터를 Affine 계층에 입력한다. 이는 앞 장에서 본 Decoder의 개선으로부터 자연스럽게 확장된 것으로 볼 수 있다. 밑의 그림 처럼 앞 장의 Decoder에 어텐션 정보를 '추가'할 수 있기 때문이다.
+
+![image-20210421224948575](CHAPTER8_Attention.assets/image-20210421224948575.png)
+
+앞 장의 Decoder에 Attention 계층이 구한 맥락 벡터 정보를 '추가'한 것으로 생각할 수 있다. Affine 계층에는 기존과 마찬가지로 LSTM 계층의 은닉 상태 벡터를 주고, 여기에 더해 Attention 계층의 맥락 벡터까지 입력하는 것이다.
+
+
+
+시계열 방향으로 펼쳐진 다수의 Attention 계층을 Time Attention 계층으로 모아 구현하자.
+
+![image-20210421225440202](CHAPTER8_Attention.assets/image-20210421225440202.png)
+
+Time Attention 계층은 다수의 Attention 계층을 모았을 뿐이다.
+
+```python
+# ch08/attention_layer.py
+```
+
+
+
+Attention 계층을 필요한 수 만큼 만들고 (코드에서는 T개), 각각이 순전파와 역전파를 수행한다. 각 Attention 계층의 각 단어의 가중치를 attention_weights 리스트에서 보관한다.
+
+
+
+## 8.2 어텐션을 갖춘 seq2seq 구현
 
