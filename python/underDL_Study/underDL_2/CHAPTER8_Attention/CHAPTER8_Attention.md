@@ -304,3 +304,95 @@ Attention 계층을 필요한 수 만큼 만들고 (코드에서는 T개), 각�
 
 ## 8.2 어텐션을 갖춘 seq2seq 구현
 
+어텐션을 갖춘 seq2seq를 구현해보자.
+
+
+
+### 8.2.1 Encoder 구현
+
+```python
+# ch08/attention_seq2seq.py
+```
+
+
+
+### 8.2.2 Decoder 구현
+
+어탠션을 이용한 Decoder의 계층 구성
+
+![image-20210422234756689](CHAPTER8_Attention.assets/image-20210422234756689.png)
+
+Time Softmax with Loss 계층의 앞까지를 Decoder로 구현해보자.
+
+순전파, 역전파 메서드 뿐만 아니라 새로운 단어열을 생성하는 generate() 메서드도 추가한다.
+
+```python
+# ch08/attention_seq2seq.py
+```
+
+forward() 메서드에서 Time Attention 계층의 출력과 LSTM 계층의 출력을 연결한다는 점만 주의하자. 두 출력을 연결할 때는 np.concatenate() 메서드를 사용한다.
+
+
+
+### 8.2.3 seq2seq 구현
+
+AttentionSeq2seq 클래스의 구현.
+
+앞 장의 Seq2seq와의 차이점은 Encoder 대신 AttentionEncoder클래스, Decoder 대신 AttentionDecoder 클래스를 사용하는 것이다. 따라서 앞 장의 Seq2seq 클래스를 상속 후 초기화 메서드를 수정한다.
+
+```python
+from ch07.seq2seq import Encoder, Seq2seq
+
+class AttentionSeq2seq(Seq2seq):
+    def __init__(self, vocab_size, wordvec_size, hidden_size):
+        args = vocab_size, wordvec_size, hidden_size
+        self.encoder = AttentionEncoder(*args)
+        self.decoder = AttentionDecoder(*args)
+        self.softmax = TimeSoftmaxWithLoss()
+        
+        self.params = self.encoder.params + self.decoder.params
+        self.grads = self.encoder.grads + self.decoder.grads
+```
+
+
+
+
+
+## 8.3 어텐션 평가
+
+AttentionSeq2seq 클래스를 사용해 현실적인 문제에 도전해보자.
+
+'날짜 형식'을 변경하는 문제(데이터 크기가 작고, 어느 쪽인가를 맞추는 인위적인 문제)로 어텐션을 갖춘 seq2seq의 효과를 확인해보자.
+
+
+
+### 8.3.1 날짜 형식 변환 문제
+
+영어권에서 사용되는 다양한 날짜 형식을 표준 형식으로 변환하는 것이 목표이다.
+
+ex) "september 27, 1994" ㅡ> "1994-09-27" 같은 표준 형식으로 변환
+
+
+
+날짜 형식 변환 문제를 채용한 데는 두 가지 이유가 있다.
+
+- 겉보기만큼 간단하지 않다. 입력되는 날짜 데이터에는 다양한 변형이 존재하여 변환 규칙이 복잡해진다.
+- 문제의 입력(질문)과 출력(답변) 사이에 알기 쉬운 대응 관계가 있다. ( 연, 월, 일의 대응 관계가 존재 ) 따라서 어텐션이 각각의 원소에 올바르게 주목하고 있는지를 확인할 수 있다.
+
+![image-20210422235619667](CHAPTER8_Attention.assets/image-20210422235619667.png)
+
+데이터셋(dataset/date.txt)은 입력 문장의 길이를 통일하기 위해 공백 문자로 패딩해뒀고, 입력과 출력의 구분 문자로는 `_`(밑줄)을 사용하였다. 출력의 문자 수는 일정하기 때문에 출력의 끝을 알리는 구분 문자는 따로 사용하지 않는다.
+
+
+
+### 8.3.2 어텐션을 갖춘 seq2seq의 학습
+
+날짜 변환용 데이터셋으로 AttentionSeq2seq를 학습시켜보자.
+
+```python
+# ch08/train.py
+```
+
+
+
+입력 문장을 반전시키는 기법( Reverse )도 적용했다.
