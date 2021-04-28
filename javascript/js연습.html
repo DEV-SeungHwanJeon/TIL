@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <input type="text">
+  <button>Add</button>
+  <ul>
+    <li>첫 번째 할일</li>
+  </ul>
+  <script>
+    // ul 태그에 자식으로 li 태그를 만들어서 추가할 것이다.
+    const newTodoLi = document.createElement('li')
+    const ul = document.querySelector('ul')
+
+    // ul.appendChild(newTodoLi)
+    // newTodoLi.innerText = 'js로 추가된 list'
+    function hello(world) {
+      alert('hello!', world)
+    }
+    hello(100)
+    hello()
+
+    function onClick() {
+      const input = document.querySelector('input')
+      if (input.value == '') {
+        return
+      }
+      const newTodoLi = document.createElement('li')
+      newTodoLi.innerText = input.value
+      const ul = document.querySelector('ul')
+      ul.appendChild(newTodoLi)
+      input.value = ''
+    }
+    
+    const addButton = document.querySelector('button')
+    addButton.addEventListener('click', onClick)
+
+    const input = document.querySelector('input')
+    input.addEventListener('change', onClick)
+
+
+  </script>
+</body>
+</html>
