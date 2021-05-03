@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat & Dog API</title>
+  <style>
+    img {
+      height: 500px;
+    }
+    .vs {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cat & Dog API</h1>
+  <div>
+    <img src="" alt="dog" class="dog">
+    <h2 class="vs">VS</h2>
+    <img src="" alt="cat" class="cat">
+  </div>
+  <br>
+  <button>Get Image</button>
+  
+  <!-- axios CDN을 삽입한다. -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    const DOG_URI = 'https://dog.ceo/api/breeds/image/random'
+
+    const CAT_URI = "https://api.thecatapi.com/v1/images/search?order=RANDOM&limit=1"
+
+
+    function getImg () {
+      // axios를 사용하여 API_URI로 GET 요청을 보낸다.
+      axios.get(DOG_URI)
+        .then((response) => {
+          return response.data.message
+        })
+      // .then 메서드를 통해 요청이 성공적인 경우의 콜백함수를 정의한다.
+        .then((response) => {
+          let DogimgTag = document.querySelector(".dog")
+          // 응답객체의 데이터에서 이미지에 대한 리소스를 img 요소의 src 속성으로 할당한다.
+          DogimgTag.setAttribute('src',response)
+        })
+      
+      axios.get(CAT_URI)
+        .then((response) => {
+          return response.data[0].url
+        })
+        .then((response) => {
+          let CatimgTag = document.querySelector(".cat")
+          CatimgTag.setAttribute('src',response)
+        })
+    }
+
+    const button = document.querySelector('button')
+    button.addEventListener('click', getImg)
+  </script>
+</body>
+</html>
