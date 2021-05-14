@@ -31,3 +31,86 @@
   - 브라우저 밖을 벗어 날 수 없던 자바스크립트 언어의 태생적 한계를 해결
 - Chrome V8 엔진을 제공하여 여러 OS 환경에서 실행할 수 있는 환경을 제공
 - 즉, 단순히 브라우저만 조작할 수 있던 자바스크립트를 SSR에서도 사용 가능하도록 함
+
+#### NPM (Node Package Manage)
+
+- 자바스크립트 언어를 위한 패키지 관리자
+  - Python의 pip, Node.js 에는 NPM
+  - pip와 마찬가지로 다양한 의존성 패키지를 관리
+- Node.js의 기본 패키지 관리자 ( 자동으로 설치됨 )
+
+
+
+## Babel & Webpack
+
+
+
+**Babel**
+
+- JavaScript Transcompiler
+
+- 자바스크립트의 신버전 코드를 구버전으로 번역/변환 해주는 도구
+
+- 자바스크립트는 파편화와 표준화의 영향으로 작성된 코드의 스펙트럼이 매우 다양
+
+  - 최신 문법을 사용해도 브라우저 별로 알아서 변경해줌
+
+
+
+
+**Webpack**
+
+- static module bundler
+- 모듈 간의 의존성 문제를 해결하기 위한 도구
+- Module
+  - 모듈은 단지 파일 하나를 의미 
+  - 배경
+    - 자바스크립트와 애플리케이션이 복잡해지고 크기가 커지자 전역 스코프를 공유하는 형태의 기존 개발 방식의 한계점이 드러남
+    - 그래서 라이브러리를 만들어 필요한 모듈을 언제든지 불러오거나 코드를 모듈 단위로 작성하는 등의 다양한 시도가 이루어짐
+    - 현재는 대부분의 브라우저와 Node.js가 모듈 시스템을 지원
+  - Module 의존성 문제
+    - 모듈의 수가 많아지고 라이브러리 혹은 모듈 간의 의존성(연결성)이 깊어지면서 특정한 곳에서 발생한 문제가 어떤 모듈 간의 문제인지 파악하기 어려워짐 (의존성 문제)
+    - Webpack은 모듈 간의 의존성 문제를 해결하기 위해 존재하는 도구
+- Bundler
+  - 모듈 의존성 문제를 해결해주는 작업이 Bundling 이고 이러한 일을 해주는 도구가 Bundler이고, Webpack은 다양한 Bundler 중 하나
+  - 모듈들을 하나로 묶어주고 묶인 파일은 하나 ( 혹은 여러 개)로 만들어짐
+  - Bundling된 결과물은 더 이상 서순에 영향을 받지 않고 동작하게 됨
+  - Bundling 과정에서 문제가 해결되지 않으면 최종 결과물을 만들어 낼 수 없기 때문에 유지 & 보수의 측면에서도 매우 편리해짐
+  - Vue CLI는 Babel, Webpack에 대한 초기 설정이 자동으로 되어 있음
+
+
+
+
+
+## Vue CLI 구조
+
+- node_modules
+  - node.js 환경의 여러 의존성 모듈
+  - 프로젝트 로컬에서 사용되는 모든 모듈package가 설치가 된다.
+    - node_modules === python venv의 package
+- public/index.html
+  - Vue 앱의 뼈대가 되는 html 파일
+- src/assets
+  - webpack에 의해 빌드된 정적 파일
+- src/components
+  - 하위 컴포넌트들이 위치
+- src/App.vue
+  - 최상위 컴포넌트
+- src/main.js
+  - webpack이 빌드를 시작할 때 가장 먼저 불러오는 entry point
+  - 실제 단일 파일에서 DOM과 data를 연결했던 것과 동일한 작업이 이루어지는 곳
+  - Vue 전역에서 활용할 모듈을 등록할 수 있는 파일 (ex. lodash)
+- babel.config.js
+  - babel 관련 설정이 작성된 파일
+- package.json
+  - scripts - 사용할 명령어 script
+  - dependencies - 개발 + 배포 환경에서까지 활용할 모듈
+  - devDependencies - 개발 단계에서만 활용할 모듈
+- package-lock.json
+  - node_modules에 **설치되는 모듈과 관련**해서 모든 의존성을 설정 및 관리
+    - 팀원 및 배포 환경에서 정확히 동일한 종속성을 설치하도록 보장하는 표현
+    - 사용할 패키지의 버전을 고정
+  - 개발 과정 간의 의존성 패키지 충돌 방지
+
+
+
