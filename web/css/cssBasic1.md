@@ -293,14 +293,19 @@ flex 내부 item들의 방향 설정
 
 - 배치 방향 설정 
   - flex-direction : 메인 축을 바꾼다. row, row-reverse, column, column-reverse 
-- 메인 축 방향 정렬 : justify-content (flex-start, flex-end, center, space-between (맨 끝에 배치 후 사이간격 같게), space-around(요소 양 옆 간격이 같게), space-evenly(맨 끝부터 간격이 완전 똑같게))
+- 메인 축 방향 정렬 : 
+  - justify-content 
+    - flex-start, flex-end, center
+    - space-between (맨 끝에 배치 후 사이간격 같게)
+    - space-around(요소 양 옆 간격이 같게)
+    - space-evenly(맨 끝부터 간격이 완전 똑같게)
 - 교차축 방향 정렬 : (flex-start, flex-end, center, stretch)
   - align-items : baseline
   - align-self : auto, baseline
   - align-content : space-between, space-around
 - 기타:
-  - flex-wrap
-  - flex-flow 
+  - flex-wrap : 요소들이 강제로 한 줄에 배치되게 할 것인지 여부
+  - flex-flow : flex-direction과 flex-wrap의 shorthand
   - flex-grow
   - order
 
@@ -320,3 +325,59 @@ container, rows, column으로 컨텐츠를 배치하고 정렬
   - Extra extra large (xxl) : 1400px 이상
 - nesting: row 안에 다시 row가 들어가는 개념
 - offset : 해당 col의 왼쪽에 공백을 만든다.
+
+
+
+
+
+### bootstrap
+
+기능: CSS를 초기화한다. 일반적으로 브라우저는 사용자를 위해서 약간의 스타일들을 자체적으로 갖고 있다. 브라우저마다 다르다. 이걸 초기화한다.
+
+리셋하는 파일: bootstrap-reboot.css
+
+reset과 normalize이다. 현대 css에서는 normalize.css를 사용한다. 어느정도의 스타일을 공용하면서 초기화한다.
+
+reset은 스타일을 강하게 다 무시하는 방법이어서 잘 사용되지 않는다. 
+
+
+
+bootstrap 줄임말들:
+
+![image-20210516172134685](cssBasic1.assets/image-20210516172134685.png)
+
+
+
+반응형 웹: 같은 컨텐츠를 보는 각기 다른 디바이스
+
+
+
+반응형 웹 디자인:
+
+다양한 화면 크기를 가진 디바이스들이 등장함에 따라 반응형 웹 디자인 개념이 등장.
+
+반응형 웹은 별도의 기술 이름이 아닌 웹 디자인에 대한접근 방식, 
+
+반응형 레이아웃 작성에 도움이 되는 사례들의 모음등을 기술하는데 사용되는 용어
+
+ex) flexbox, 부트스트랩 그리드 시스템
+
+
+
+부트스트랩 그리드 시스템: 
+
+- flexbox로 제작 됨
+- container, row, column으로 컨텐츠를 배치하고 정렬
+  - 12개의 column
+  - 6개의 grid breakpoints
+    - Extra small (xs)
+    - Small (sm)
+    - Medium (md)
+    - Large (lg)
+    - Extra large (xl)
+    - Extra extra large (xxl)
+
+![image-20210516172329391](cssBasic1.assets/image-20210516172329391.png)
+
+
+
