@@ -9,6 +9,7 @@
         v-for="member in this.$store.state.user.currentRoom.roomMember"
         :key="member.userId"
         :member="member"
+        
       />
     </div>
   </div>

@@ -16,6 +16,7 @@ export default new Vuex.Store({
           {userId: 2, userName: '박상락', url: 'https://cdn2.thecatapi.com/images/b2a.jpg'}, 
           {userId: 3, userName: '박진형', url: 'https://cdn2.thecatapi.com/images/em.jpg'}, 
           {userId: 4, userName: '허지혜', url: 'https://cdn2.thecatapi.com/images/81m.gif'},
+          {userId: 99, userName: '으악', url: 'https://cdn2.thecatapi.com/images/81m.gif'},
         ]
       },
       {
