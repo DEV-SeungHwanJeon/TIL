@@ -4,7 +4,13 @@ Representational State Transfer API
 
 REST(Representational State Transfer): 2000년 로이 필딩의 박사학위에서 그 당시 웹(HTTP) 설계의 우수성에 비해 제대로 사용되어지지 못하는 모습을 보고 웹의 장점을 최대한 활용할 수 있는 아키텍처로서 REST를 발표했다.
 
+키워드 : Self-descriptive, HATEOAS
 
+- Self-descriptive(확장 가능한 커뮤니케이션)
+  - 서버나 클라이언트가 변경되더라도 오고가는 메시지는 언제나 Self-descriptive 하므로 언제나 해석이 가능하다.
+
+- HATEOAS(애플리케이션 상태 전이의 late binding)
+  - 어디서 어디로 전이가 가능한지 미리 결정되지 않는다. 어떤 상태로 전이가 완료되고 나서야 그 다음 전이될 수 있는 상태가 결정된다. ( 링크는 동적으로 변경될 수 있다.)
 
 ## 1. REST 구성
 
@@ -16,14 +22,14 @@ REST(Representational State Transfer): 2000년 로이 필딩의 박사학위에�
 
 ## 2. REST의 특징
 
-- Uniform (유니폼 인터페이스)
+- Uniform (인터페이스 일관성)
   - URI로 지정한 리소스에 대한 조직을 통일되고 한정적인 인터페이스로 수행하는 아키텍처 스타일
 - Stateless (무상태성)
   - REST는 무상태성 성격을 갖는다.
     - 작업을 위한 상태정보를 따로 저장하고 관리하지 않는다.
     - 세션 정보나 쿠키정보를 별도로 저장하고 관리하지 않기 때문에 API 서버는 들어오는 요청만을 단순히 처리하면 된다.
       - 서비스의 자유도가 높아지고 서버에서 불필요한 정보를 관리하지 않음으로써 구현이 단순해진다.
-- Cacheable (캐시 가능)
+- Cacheable (캐시 처리 가능)
   - REST의 가장 큰 특징 중 하나는 HTTP라는 기존 웹표준을 그대로 사용하기 때문에, 웹에서 사용하는 기존 인프라를 그대로 활용이 가능하다. 따라서 HTTP가 가진 캐싱 기능이 적용 가능하다. HTTP 프로토콜 표준에서 사용하는 Last-Modified 태그나 E-Tag를 이용하면 캐싱 구현이 가능하다.
 - Self-descriptiveness (자체 표현 구조)
   - REST API 메시지만 보고도 이를 쉽게 이해할 수 있는 자체 표현 구조로 되어있다는 것이다.
