@@ -1,3 +1,11 @@
+콘솔창에 
+
+document.head.parentNode.removeChild(document.head); 
+
+를 실행하면 inline 스타일 css를 제외하고 모든 css가 지워진 모습을 볼 수 있다.
+
+
+
 # HTML
 
 HTML : Hyper Text Markup Language
