@@ -54,4 +54,3 @@
 
 :white_check_mark:  롤 골드 가기
 
-:white_check_mark:

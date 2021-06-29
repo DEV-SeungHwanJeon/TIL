@@ -99,7 +99,7 @@ JAVA 프로그램을 개발할 때, 일반 Editor(메모장, notepad++ 등) 을 
 - 문자형
   - type : char
     - bit 수 : 16개
-    - 값 : \u0000 ~ \uffff (0 ~ 2^15-1 )
+    - 값 : \u0000 ~ \uffff (0 ~ 2^16-1 )
 
 
 
