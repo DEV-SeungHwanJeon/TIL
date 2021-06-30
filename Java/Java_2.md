@@ -27,8 +27,6 @@
 ### Class 만들기
 
 ```java
-package com.ssafy;
-
 public class Phone {
     public String name;
     public char color;
@@ -55,8 +53,6 @@ behavior ( methods ) : getRealDebt
 > Class를 사용하는 코드를 작성해보자. 추상화의 결과로 Class를 만들었고 그 Class를 이용해서 대상이 되는 특정 Object를 만들게 된다.
 
 ```java
-package com.ssafy;
-
 public class PhoneTest {
     public static void main(String[] args) { // 자바 Virtual Machine의 시작 포인트
         Phone phone = new Phone(); // Object new Constructor
@@ -585,8 +581,188 @@ String객체의 equals()를 이용하면 new로 만든 문자열의 내용이 �
 자주 복수 개의 String을 이어서 새로운 String을 만들게 된다.
 
 - operator를 사용하는 방법과 StringBuilder를 사용하는 방법을 알아보자.
+
 - operator를 이용하면 그만큼 String 객체가 새로 만들어진다. 불필요한 객체가 많이 만들어져서 성능에 영향을 미칠 수 있다.
+
 - 간단한 +의 나열은 compiler가 내부적으로 StringBuilder를 사용해 처리한다. 그러나 Loop 등의 코드 안에서는 그러하지 않다.
+
+  - 그래서 StringBuilter를 사용하는게 더 낫다.
+
+- ```java
+  public static void main(String[] args) {
+      String s1 = "Hello";
+      String s2 = "World";
+      String s3 = s1 + ", " + s2;
+      
+      System.out.println(s3);
+      
+      StringBuilder sb = new StringBuilder("");
+      sb.append(s1).append(", ").append(s2);
+      
+      System.out.println(sb.toString());
+      
+      String[] strArray = {"Hello", ", ", "World" };
+      
+      String str = "";
+      for ( String s : strArray ) {
+          str += s;
+      }
+      System.out.println(str);
+      
+      sb.setLength(0); // 현재 갖고있는 메모리를 재활용 함. = 기존의 StringBuilder를 없애고 새로운 StringBuilder를 만드는 거와 같음
+      for( String s : strArray ) {
+          sb.append(s);
+      }
+      System.out.println(sb);
+  }
+  ```
+
+
+
+**toString()**
+
+어떤 객체의 상태를 표현하는 가장 간단한 방법은 toString()이라는 method를 만드는 것이다.
+
+toString() method는 객체를 만들면 자동으로 만들어지는데 (사실은 Object Class 로부터 상속) default로 객체의 주소 정보를 String type으로 return 한다.
+
+System.out.println( 객체 )로, 객체의 현재 상태를 member variables의 값을 출력하려면 toString() method를 재정의 하면 된다.
+
+
+
+Phone Class에 toString()을 추가하기 전, 후를 비교해보자
+
+```java
+public static void main(String[] args) {
+    Phone phone = new Phone();
+    
+    phone.setName("Galaxy Note");
+    phone.setColor('B');
+    phone.setPrice(10000);
+    
+    System.out.println(phone); // com.jsh.Phone@631fds 가 출력됨. JVM의 해당 객체가 만들어진 해쉬코드를 이용한 위치정보라고 생각하면 된다. 보통은 이런 것을 원하지 않으므로 toString()을 만들어준다.
+    
+    public String toString() {
+        return this.name + " " + this.color + " " + this.price;
+    }
+}
+```
+
+
+
+**Pass By Value**
+
+Java에서 생성자 또는 method를 호출할 때, 전달되는 parameter의 값이 어떤 방식으로 전달되는지 알아보자.
+
+```java
+public class PassByValueTest {
+    public static void main(String[] args) {
+        int i = 10;
+        setVal(i);
+        System.out.println(i);
+        
+        Pass p = new Pass();
+        p.val = 10;
+        setVal(p);
+        System.out.println(p.val);
+    }
+    
+    public static void setVal(int x) { x = 5; }
+    
+    public static void setVal(Pass p) { p.val = 5; }
+}
+
+class Pass {
+    public int val = 3;
+}
+```
+
+
+
+Java 코드 관리.
+
+Access Modifier를 이용해서 팀별 R&R을 명확히 하자.
+
+package를 통해 Code를 관리.
+
+
+
+### package
+
+한 개의 Java 파일에 모든 코드를 담을 수 없다.  Module 별로 나눠서 관리하는게 일반적이다. 파일을 계층적 (hierarchical) 구조로 관리하기 위해 폴더를 사용하듯이 Java의 Class도 package 라는 구조를 통해 계층적으로 관리한다.
+
+
+
+보통, www를 제외한 도메인의 역순 구조를 많이 사용한다.
+
+www.jsh.com이 도메인이면, com.jsh이 기본 package가 된다. 그 하위 package는 업무 구분 등으로 구성하면 된다.
+
+| www.jsh.com base | com.jsh        |
+| ---------------- | -------------- |
+| ERP              | com.jsh.erp    |
+| ERP - 인사       | com.jsh.erp hr |
+| Data Warehouse   | com.jsh.dw     |
+
+
+
+Java Source(~.java) 맨 위에 package keyword를 사용하여 표현하며, 구분자는 dot (.)을 사용한다.
+
+IDE에 따라 다르지만, eclipse 경우 src 폴더 안에 해당 package 구분자에 맞게 폴더를 구성하여 관리한다.
+
+compile된 ~.class 파일도 package 구분자에 맞게 폴더를 구성하여 생성된다.
+
+```java
+package com.jsh;
+
+public class Phone {
+    // ...
+}
+```
+
+
+
+다른 package에 정의된 java module을 사용하고자 할 때는 import keyword를 사용한다.
+
+import 다음에 package명을 쓰면 된다.
+
+만약 import를 사용하지 않으려면 Java Module 앞에 package명을 붙여서 사용하면 된다.
+
+com.jsh.sub package를 만들고 SubClass.java를 만들어보자.
+
+```java
+package com.jsh.sub;
+
+import com.jsh.Phone;
+
+public class SubClass {
+	Phone p = new Phone();
+	// com.jsh.Phone p = new com.jsh.Phone();
+}
+```
+
+
+
+### java.lang package
+
+많이 써왔던 System.out.println 의 System Class나 String Class는 내가 만든 것이 아니다.
+
+Java는 기본적으로 제공하는 package가 있다. java.lang package 
+
+
+
+### Access Modifier
+
+Access Modifier란:
+
+- member variables 또는 methods 앞에 위치해서 외부의 Access를 제어하는 Keyword 이다.
+
+- 권한이 다 다르다.
+
+  - | 구분        | Same Class | Same Package | Sub Class | Universe |
+    | ----------- | ---------- | ------------ | --------- | -------- |
+    | private     | O          | X            | X         | X        |
+    | ( default ) | O          | O            | X         | X        |
+    | protected   | O          | O            | O         | X        |
+    | public      | O          | O            | O         | O        |
 
 
 
